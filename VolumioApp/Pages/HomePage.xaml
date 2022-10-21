@@ -1,12 +1,72 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:VolumioApp.PageModels"
+             xmlns:converters="clr-namespace:VolumioApp.Converters"
              x:Class="VolumioApp.Pages.HomePage"
+             x:DataType="viewModels:HomePageModel"
              Title="HomePage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
+    <ContentPage.Resources>
+        <converters:MilisecondToSecondConverter x:Key="msToSec" />
+        <converters:SecondToMilisecondConverter x:Key="SecondToMilisecond" />
+        <converters:InvertedBoolConverter x:Key="InvertBool" />
+        <converters:MilisecondsToTimeConverter x:Key="MilisecondsToTime" />
+        <converters:SecondsToTimeConverter x:Key="SecondsToTime" />
+    </ContentPage.Resources>
+    <VerticalStackLayout Margin="32,32,32,0" Spacing="4">
+        <Grid ColumnDefinitions="*,*" Margin="8,0,8,0">
+            <Label Text="{Binding PlayerState.Album}" TextColor="White" />
+            <StackLayout Orientation="Horizontal" Grid.Column="1" HorizontalOptions="End" Spacing="4">
+                <Frame BackgroundColor="#8087CEEB" Padding="4,0,4,0" VerticalOptions="Center">
+                    <Label Text="{Binding PlayerState.TrackType}" TextColor="White" />
+                </Frame>
+
+                <Label Text="{Binding PlayerState.SampleRate}" TextColor="LightGrey" VerticalOptions="Center" />
+                <Label Text="{Binding PlayerState.BitDepth}" TextColor="LightGrey" VerticalOptions="Center" />
+            </StackLayout>
+        </Grid>
+        
+        <Frame Padding="0" CornerRadius="8" Margin="0,0,0,16"
             VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            HorizontalOptions="Fill" >
+            <Image Source="{Binding ImageSource}" Aspect="AspectFit"/>
+        </Frame>
+        <Label Text="{Binding PlayerState.Title}"  Margin="24,0,0,0" FontSize="Medium" TextColor="White" FontAttributes="Bold"/>
+        <Label Text="{Binding PlayerState.Artist}"  Margin="24,0,0,8" FontSize="Small" TextColor="LightGrey"/>
+        <Slider Value="{Binding PlayerState.Seek, Mode=TwoWay}" Maximum="{Binding PlayerState.Duration, Converter={StaticResource SecondToMilisecond}}" Margin="0,0,0,0"  />
+        <Grid ColumnDefinitions="*,*" Margin="24,0,24,24">
+            <Label Grid.Column="0" Text="{Binding PlayerState.Seek, Converter={StaticResource MilisecondsToTime}}" HorizontalOptions="Start" TextColor="White" />
+            <Label Grid.Column="1" Text="{Binding PlayerState.Duration, Converter={StaticResource SecondsToTime}}" HorizontalOptions="End"  TextColor="White" />
+        </Grid>
+        
+
+        <FlexLayout Direction="Row" AlignItems="Center" JustifyContent="SpaceEvenly"  HeightRequest="40">
+            <Button ImageSource="rewind.png"
+                    Style="{StaticResource MediaButton}"
+                Command="{Binding PreviousTrackCommand}" />
+            <Button Style="{StaticResource MediaButton}"
+                ImageSource="play.png"
+                    IsVisible="{Binding PlayerState.IsPlaying, Converter={StaticResource InvertBool}}"
+                Command="{Binding TogglePlaybackCommand}" />
+            <Button Style="{StaticResource MediaButton}"
+                ImageSource="pause.png"
+                    IsVisible="{Binding PlayerState.IsPlaying}"
+                Command="{Binding TogglePlaybackCommand}" />
+            <Button ImageSource="skip"
+                    Style="{StaticResource MediaButton}"
+                TextColor="White"
+                Command="{Binding NextTrackCommand}" />
+        </FlexLayout>
+
+        <Button ImageSource="volume.png"
+                    Style="{StaticResource MediaButton}"
+                Command="{Binding UnmuteCommand}" />
+
+        <Button ImageSource="mute.png"
+                    Style="{StaticResource MediaButton}"
+                Command="{Binding MuteCommand}" />
+
     </VerticalStackLayout>
+        
 </ContentPage>
+    

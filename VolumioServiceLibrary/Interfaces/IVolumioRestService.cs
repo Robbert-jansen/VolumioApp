@@ -11,4 +11,14 @@ public interface IVolumioRestService
 {
     Task<NavigationRoot> GetAlbums();
     Task<PlayerState> GetPlayerState();
+
+    Task TogglePlayback();
+
+    Task NextTrack();
+
+    Task PreviousTrack();
+
+    Task MuteVolume();
+
+    Task UnmuteVolume();
 }

@@ -4,6 +4,17 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>Volumio Models</Title>
+    <RepositoryUrl>https://github.com/Robbert-jansen/VolumioApp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/Robbert-jansen/VolumioApp</PackageProjectUrl>
+    <Copyright>Robbert Jansen</Copyright>
+    <Version>1.0.0</Version>
+    <PackageId>VolumioModels</PackageId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PropertyChanged.Fody" Version="4.0.5" />
+  </ItemGroup>
 
 </Project>
