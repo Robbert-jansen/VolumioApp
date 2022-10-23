@@ -102,6 +102,7 @@ public class HomePageModel : BasePageModel
         EditPlaybackValuesCommand = new Command(async () =>
         {
             EditPlaybackValues = !EditPlaybackValues;
+            await _volumioService.GetQueue();
         });
 
         VolumeSliderDragCompletedCommand = new Command(async () =>

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SocketIOClient;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -8,66 +9,85 @@ using System.Text;
 using System.Threading.Tasks;
 using VolumioModelLibrary.Models;
 using VolumioServiceLibrary.Interfaces;
+using Queue = VolumioModelLibrary.Models.Queue;
 
 namespace VolumioServiceLibrary.Services;
 
 public class VolumioService : IVolumioService
 {
-    private static SocketIO _client { get; set; }
+    private static SocketIO? Client { get; set; }
 
-    public event EventHandler StatePushed;
+    public event EventHandler? StatePushed;
+    public event EventHandler? QueuePushed;
 
     public VolumioService()
-    {
+    {    
         OnInit();
     }
 
     public async void OnInit()
     {
-        _client = new SocketIO("http://192.168.2.21:3000/");
-        _client.On("pushState", response =>
+        Client = new SocketIO("http://192.168.2.21:3000/");
+        Client.On("pushState", response =>
         {
-                PlayerState playerState = JsonConvert.DeserializeObject<PlayerState>(response.GetValue(0).ToString());
-                StatePushed.Invoke(playerState,null);
-            });
+            PlayerState? playerState = JsonConvert.DeserializeObject<PlayerState>(response.GetValue(0).ToString());
+            if(playerState != null)
+            {
+                StatePushed?.Invoke(playerState, new EventArgs());
+            }         
+        });
 
-        await _client.ConnectAsync();
+        Client.On("pushQueue", response =>
+        {
+            Queue? queue = JsonConvert.DeserializeObject<Queue>(response.GetValue(0).ToString());
+            if(queue != null)
+            {
+                QueuePushed?.Invoke(queue, new EventArgs());
+            }         
+        });
+
+        await Client.ConnectAsync();
 
     }
 
     public async Task TogglePlayback()
     {
-        await _client.EmitAsync("toggle");
+        await Client!.EmitAsync("toggle");
     }
 
     public async Task NextTrack()
     {
-        await _client.EmitAsync("next");
+        await Client!.EmitAsync("next");
     }
 
     public async Task PreviousTrack()
     {
-        await _client.EmitAsync("previous");
+        await Client!.EmitAsync("previous");
     }
 
     public async Task MuteVolume()
     {
-        await _client.EmitAsync("mute");
+        await Client!.EmitAsync("mute");
     }
 
     public async Task UnmuteVolume()
     {
-        await _client.EmitAsync("unmute");
+        await Client!.EmitAsync("unmute");
     }
 
     public async Task ChangeVolume(int volume)
     {
-        await _client.EmitAsync("volume", volume);
+        await Client!.EmitAsync("volume", volume);
     }
 
     public async Task ChangeSeek(int seconds)
     {
-        await _client.EmitAsync("seek", seconds);
+        await Client!.EmitAsync("seek", seconds);
+    }
+
+    public async Task GetQueue()
+    {
+        await Client!.EmitAsync("getQueue");
     }
 }
 

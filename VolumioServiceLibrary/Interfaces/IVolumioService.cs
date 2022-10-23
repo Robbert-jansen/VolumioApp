@@ -10,6 +10,7 @@ namespace VolumioServiceLibrary.Interfaces;
 public interface IVolumioService
 {
     public event EventHandler StatePushed;
+    public event EventHandler QueuePushed;
 
     Task TogglePlayback();
 
@@ -24,4 +25,6 @@ public interface IVolumioService
     Task ChangeVolume(int volume);
 
     Task ChangeSeek(int seconds);
+
+    Task GetQueue();
 }

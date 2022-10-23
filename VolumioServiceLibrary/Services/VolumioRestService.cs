@@ -9,6 +9,7 @@ using VolumioServiceLibrary.Interfaces;
 
 namespace VolumioServiceLibrary.Services;
 
+[Obsolete("VolumioRestService is deprecated, please use VolumioService instead.")]
 public class VolumioRestService : IVolumioRestService
 {
     private static readonly HttpClient client = new HttpClient();
@@ -20,10 +21,13 @@ public class VolumioRestService : IVolumioRestService
         if (response.IsSuccessStatusCode)
         {
             var Content = await response.Content.ReadAsStringAsync();
-            var test = JsonConvert.DeserializeObject<Navigation>(Content);
-            return JsonConvert.DeserializeObject<NavigationRoot>(Content);
+            NavigationRoot? navigationRoot = JsonConvert.DeserializeObject<NavigationRoot>(Content);
+            if(navigationRoot != null)
+            {
+                return navigationRoot;
+            }         
         }
-        return null;
+        return new NavigationRoot();
     }
 
     public async Task<PlayerState> GetPlayerState()
@@ -33,10 +37,13 @@ public class VolumioRestService : IVolumioRestService
         if (response.IsSuccessStatusCode)
         {
             var Content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<PlayerState>(Content);
-
+            PlayerState? playerState = JsonConvert.DeserializeObject<PlayerState>(Content);
+            if(playerState != null)
+            {
+                return playerState;
+            }
         }
-        return null;
+        return new PlayerState();
     }
 
     public async Task MuteVolume()
@@ -52,34 +59,16 @@ public class VolumioRestService : IVolumioRestService
     public async Task NextTrack()
     {
         var response = await client.GetAsync("http://192.168.2.21/api/v1/commands/?cmd=next");
-
-        if (response.IsSuccessStatusCode)
-        {
-
-
-        }
     }
 
     public async Task PreviousTrack()
     {
         var response = await client.GetAsync("http://192.168.2.21/api/v1/commands/?cmd=prev");
-
-        if (response.IsSuccessStatusCode)
-        {
-
-
-        }
     }
 
     public async Task TogglePlayback()
     {
         var response = await client.GetAsync("http://192.168.2.21/api/v1/commands/?cmd=toggle");
-
-        if (response.IsSuccessStatusCode)
-        {
-
-
-        }
     }
 
     public async Task ChangeVolume(int volume)

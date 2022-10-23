@@ -7,6 +7,7 @@ using VolumioModelLibrary.Models;
 
 namespace VolumioServiceLibrary.Interfaces;
 
+[Obsolete("IVolumioRestService is deprecated, please use IVolumioService instead.")]
 public interface IVolumioRestService
 {
     Task<NavigationRoot> GetAlbums();

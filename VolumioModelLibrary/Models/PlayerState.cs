@@ -37,13 +37,13 @@ public class PlayerState : INotifyPropertyChanged
          }
     }
 
-    public string Status { get; set; }
-    public int Position { get; set; }
-    public string Title { get; set; }
-    public string Artist { get; set; }
-    public string Album { get; set; }
+    public string? Status { get; set; }
+    public int? Position { get; set; }
+    public string? Title { get; set; }
+    public string? Artist { get; set; }
+    public string? Album { get; set; }
 
-    private string albumart;
+    private string? albumart;
     public string Albumart
     {
         get
@@ -55,15 +55,15 @@ public class PlayerState : INotifyPropertyChanged
             albumart = "http://192.168.2.21" + value;
         }
     }
-    public string Uri { get; set; }
-    public string TrackType { get; set; }
+    public string? Uri { get; set; }
+    public string? TrackType { get; set; }
 
     // Current timestamp in miliseconds.
-    public int Seek { get; set; } 
+    public int? Seek { get; set; } 
     // Duration in seconds.
-    public int Duration { get; set; }
+    public int? Duration { get; set; }
 
-    public string SampleRate { get; set; }
+    public string? SampleRate { get; set; }
     public string BitDepth { get; set; }
     public object Random { get; set; }
     public object Repeat { get; set; }
