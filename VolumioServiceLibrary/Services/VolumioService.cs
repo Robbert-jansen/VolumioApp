@@ -80,7 +80,7 @@ public class VolumioService : IVolumioService
         await Client!.EmitAsync("volume", volume);
     }
 
-    public async Task ChangeSeek(int seconds)
+    public async Task ChangeSeek(int? seconds)
     {
         await Client!.EmitAsync("seek", seconds);
     }

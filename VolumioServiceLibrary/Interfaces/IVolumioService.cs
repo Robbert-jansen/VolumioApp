@@ -24,7 +24,7 @@ public interface IVolumioService
 
     Task ChangeVolume(int volume);
 
-    Task ChangeSeek(int seconds);
+    Task ChangeSeek(int? seconds);
 
     Task GetQueue();
 }
