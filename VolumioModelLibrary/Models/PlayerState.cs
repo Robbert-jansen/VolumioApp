@@ -42,7 +42,18 @@ public class PlayerState : INotifyPropertyChanged
     public string? AlbumArt
     {
         get => _albumArt;
-        set => _albumArt = "http://192.168.2.21" + value;
+        set
+        {
+            if(value.Contains("http"))
+            {
+                _albumArt =  value;
+            }
+            else
+            {
+                _albumArt = "http://192.168.2.21" + value;
+            }
+            
+        }
     }
     public string? Uri { get; set; }
     public string? TrackType { get; set; }

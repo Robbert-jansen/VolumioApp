@@ -1,12 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SocketIOClient;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using VolumioModelLibrary.Models;
 using VolumioServiceLibrary.Interfaces;
 using Queue = VolumioModelLibrary.Models.Queue;
@@ -47,8 +41,19 @@ public class VolumioService : IVolumioService
             }
    
         });
-
+        Debug.WriteLine("!!!!!!!!!!!!!!!Socket Connecting: " + Socket.Connected);
+        Debug.WriteLine("!!!!!!!!!!!!!!!Socket Connecting: " + Socket.Connected);
+        Debug.WriteLine("!!!!!!!!!!!!!!!Socket Connecting: " + Socket.Connected);
+        Debug.WriteLine("!!!!!!!!!!!!!!!Socket Connecting: " + Socket.Connected);
+        Debug.WriteLine("!!!!!!!!!!!!!!!Socket Connecting: " + Socket.Connected);
+        Debug.WriteLine("!!!!!!!!!!!!!!!Socket Connecting: " + Socket.Connected);
         await Socket.ConnectAsync();
+        Debug.WriteLine("!!!!!!!!!!!!!!!Socket connected: " + Socket.Connected);
+        Debug.WriteLine("!!!!!!!!!!!!!!!Socket connected: " + Socket.Connected);
+        Debug.WriteLine("!!!!!!!!!!!!!!!Socket connected: " + Socket.Connected);
+        Debug.WriteLine("!!!!!!!!!!!!!!!Socket connected: " + Socket.Connected);
+        Debug.WriteLine("!!!!!!!!!!!!!!!Socket connected: " + Socket.Connected);
+        Debug.WriteLine("!!!!!!!!!!!!!!!Socket connected: " + Socket.Connected);
 
     }
 
