@@ -82,5 +82,8 @@ public class VolumioRestService : IVolumioRestService
         }
     }
 
-
+    public async Task ChangeVolume(int volume)
+    {
+        await client.GetAsync("http://192.168.2.21/api/v1/commands/?cmd=volume&volume=" + volume);
+    }
 }

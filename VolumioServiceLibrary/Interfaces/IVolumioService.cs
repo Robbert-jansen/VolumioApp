@@ -7,10 +7,9 @@ using VolumioModelLibrary.Models;
 
 namespace VolumioServiceLibrary.Interfaces;
 
-public interface IVolumioRestService
+public interface IVolumioService
 {
-    Task<NavigationRoot> GetAlbums();
-    Task<PlayerState> GetPlayerState();
+    public event EventHandler StatePushed;
 
     Task TogglePlayback();
 
@@ -23,4 +22,6 @@ public interface IVolumioRestService
     Task UnmuteVolume();
 
     Task ChangeVolume(int volume);
+
+    Task ChangeSeek(int seconds);
 }

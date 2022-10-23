@@ -8,12 +8,16 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using VolumioModelLibrary.Models;
 using VolumioServiceLibrary.Interfaces;
+using VolumioServiceLibrary.Services;
 
 namespace VolumioApp.PageModels;
 
 public class HomePageModel : BasePageModel
 {
     private readonly IVolumioRestService _volumioRestService;
+    private readonly IVolumioService _volumioService;
+
+    //private readonly VolumioSocketIOService _volumioSocketIOService;
 
     public ICommand MuteCommand { get; set; }
     public ICommand UnmuteCommand { get; set; }
@@ -21,8 +25,13 @@ public class HomePageModel : BasePageModel
     public ICommand TogglePlaybackCommand { get; set; }
     public ICommand NextTrackCommand { get; set; }
     public ICommand PreviousTrackCommand { get; set; }
+    public ICommand EditPlaybackValuesCommand { get; set; }
+    public ICommand VolumeSliderDragCompletedCommand { get; set; }
+    public ICommand SeekSliderDragCompletedCommand { get; set; }
 
     public ImageSource PlayPauseImage { get; set; }
+
+    public bool EditPlaybackValues { get; set; }
 
     public string ToggleButtonString
     {
@@ -41,17 +50,22 @@ public class HomePageModel : BasePageModel
     public PlayerState PlayerState { get; set; }
 
     
+    
 
     // Used because of a crash on Android, if that ever gets fixed you can bind straight to the Albumart in PlayerState.
     public ImageSource ImageSource { get; set; }
     public HomePageModel(IVolumioRestService volumioRestService)
     {
         _volumioRestService = volumioRestService;
+        //_volumioSocketIOService = new VolumioSocketIOService();
+        _volumioService = new VolumioService();
+        _volumioService.StatePushed += _volumioService_StatePushed;
+
         Init();
 
         ReloadCommand = new Command(async () =>
         {
-            await LoadDataAsync();
+            //await LoadDataAsync();
         });
 
         TogglePlaybackCommand = new Command(() =>
@@ -61,35 +75,63 @@ public class HomePageModel : BasePageModel
 
         PreviousTrackCommand = new Command(async() =>
         {
-            await _volumioRestService.PreviousTrack();
-            await LoadDataAsync();
+            await _volumioService.PreviousTrack();
+            //await LoadDataAsync();
         });
 
         NextTrackCommand = new Command(async() =>
         {
-            await _volumioRestService.NextTrack();
-            await LoadDataAsync();
+            await _volumioService.NextTrack();
+            //await LoadDataAsync();
         });
 
         MuteCommand = new Command(async () =>
         {
-            await _volumioRestService.MuteVolume();
+            await _volumioService.MuteVolume();
+            //EditPlaybackValues = !EditPlaybackValues;
         });
 
         UnmuteCommand = new Command(async () =>
         {
-            await _volumioRestService.UnmuteVolume();
+            await _volumioService.UnmuteVolume();
+            //await _volumioSocketIOService.VolumeToMax();
+            //await _volumioRestService.UnmuteVolume();
+            //EditPlaybackValues = !EditPlaybackValues;
         });
 
+        EditPlaybackValuesCommand = new Command(async () =>
+        {
+            EditPlaybackValues = !EditPlaybackValues;
+        });
+
+        VolumeSliderDragCompletedCommand = new Command(async () =>
+        {
+            await _volumioService.ChangeVolume(PlayerState.Volume);
+            //EditPlaybackValues = !EditPlaybackValues;
+        });
+
+        SeekSliderDragCompletedCommand = new Command(async () =>
+        {
+            await _volumioService.ChangeSeek(PlayerState.Seek / 1000);
+        });
+
+
+
         PlayPauseImage = ImageSource.FromFile("play.png");
+    }
+
+    private void _volumioService_StatePushed(object sender, EventArgs e)
+    {
+        PlayerState = (PlayerState)sender;
     }
 
     private async void TogglePlayback()
     {
         PlayerState.IsPlaying = !PlayerState.IsPlaying;
-       await _volumioRestService.TogglePlayback();
-       await LoadDataAsync();
+       await _volumioService.TogglePlayback();
+       //await LoadDataAsync();
     }
+
     private async void Init()
     {
         // Double load on init is intentional
@@ -98,6 +140,8 @@ public class HomePageModel : BasePageModel
         await LoadDataAsync();
         await LoadDataAsync();
         await Task.Run(StartTimer);
+
+       
     }
 
     private async Task StartTimer()
