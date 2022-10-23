@@ -18,9 +18,23 @@ public class HomePageModel : BasePageModel
     public ICommand NextTrackCommand { get; set; }
     public ICommand PreviousTrackCommand { get; set; }
     public ICommand EditPlaybackValuesCommand { get; set; }
+    public ICommand ShowQueueCommand { get; set; }
     public ICommand VolumeSliderDragCompletedCommand { get; set; }
     public ICommand SeekSliderDragCompletedCommand { get; set; }
+
+    public ICommand DisableOverlayCommand { get; set; }
     public bool EditPlaybackValues { get; set; }
+
+    public bool ShowQueue { get; set; }
+
+    public bool OverlayActive
+    {
+        get
+        {
+            if (ShowQueue || EditPlaybackValues) return true;
+            return false;
+        }
+    }
 
     public string ToggleButtonString
     {
@@ -38,6 +52,8 @@ public class HomePageModel : BasePageModel
     private System.Timers.Timer Timer { get; set; }
     public PlayerState PlayerState { get; set; }
 
+    public Queue Queue { get; set; }
+
     
     
 
@@ -49,6 +65,7 @@ public class HomePageModel : BasePageModel
         //_volumioSocketIOService = new VolumioSocketIOService();
         _volumioService = new VolumioService();
         _volumioService.StatePushed += _volumioService_StatePushed;
+        _volumioService.QueuePushed += _volumioService_QueuePushed;
 
         Init();
         
@@ -80,7 +97,12 @@ public class HomePageModel : BasePageModel
         EditPlaybackValuesCommand = new Command(async () =>
         {
             EditPlaybackValues = !EditPlaybackValues;
-            await _volumioService.GetQueue();
+            //await _volumioService.GetQueue();
+        });
+
+        ShowQueueCommand = new Command(async () =>
+        {
+            ShowQueue = !ShowQueue;
         });
 
         VolumeSliderDragCompletedCommand = new Command( () =>
@@ -92,11 +114,28 @@ public class HomePageModel : BasePageModel
         {
             _volumioService.ChangeSeek(PlayerState.Seek / 1000);
         });
+
+        DisableOverlayCommand = new Command(() =>
+            {
+                EditPlaybackValues = false;
+                ShowQueue = false;
+            });
     }
+
+    private void _volumioService_QueuePushed(object sender, EventArgs e)
+    {
+        Queue.QueueItems.Clear();
+        Queue.QueueItems = (List<QueueItem>)sender;
+           
+    }
+
 
     private void _volumioService_StatePushed(object sender, EventArgs e)
     {
         PlayerState = (PlayerState)sender;
+
+        ImageSource = null;
+        ImageSource = ImageSource.FromUri(new Uri(PlayerState.AlbumArt));
     }
 
     private async void TogglePlayback()
@@ -131,13 +170,6 @@ public class HomePageModel : BasePageModel
         Console.WriteLine("elapsed");
 
         IncrementSeek();
-
-        if((DateTimeOffset.UtcNow.ToUnixTimeSeconds() - PlayerState.LastUpdated.ToUnixTimeSeconds()) >= 1)
-        {
-            System.Diagnostics.Debug.WriteLine("Refresh");
-            LoadDataAsync();
-        }
-
     }
 
     private void IncrementSeek()
@@ -158,9 +190,11 @@ public class HomePageModel : BasePageModel
 
        PlayerState playerState = await _volumioRestService.GetPlayerState();
         PlayerState = playerState;
-        
+
+        Queue queue = await _volumioService.GetQueue();
+        Queue = queue;
         // Setting ImageSource to null before setting it to the new one prevents a crash on Android when the image is the same and previously.
         ImageSource = null;
-        ImageSource = ImageSource.FromUri(new Uri(PlayerState.Albumart));
+        ImageSource = ImageSource.FromUri(new Uri(PlayerState.AlbumArt));
     }
 }

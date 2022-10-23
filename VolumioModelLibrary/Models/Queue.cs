@@ -1,4 +1,7 @@
-﻿namespace VolumioModelLibrary.Models;
+﻿using Newtonsoft.Json;
+using System.ComponentModel;
+
+namespace VolumioModelLibrary.Models;
 
 public class QueueItem
 {
@@ -10,7 +13,12 @@ public class QueueItem
     public string? Album { get; set; }
     public string? Type { get; set; }
     public int? TrackNumber { get; set; }
-    public string? AlbumArt { get; set; }
+    private string? _albumArt;
+    public string? AlbumArt
+    {
+        get => _albumArt;
+        set => _albumArt = "http://192.168.2.21" + value;
+    }
     public int? Duration { get; set; }
     public string? TrackType { get; set; }
     public string? SampleRate { get; set; }
@@ -18,8 +26,11 @@ public class QueueItem
     public int? Channels { get; set; }
 }
 
-public class Queue
+public class Queue : INotifyPropertyChanged
 {
+    [JsonProperty("Queue")]
     public List<QueueItem>? QueueItems { get; set; }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 }
 

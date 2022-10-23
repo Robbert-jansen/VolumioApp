@@ -26,5 +26,5 @@ public interface IVolumioService
 
     Task ChangeSeek(int? seconds);
 
-    Task GetQueue();
+    Task<Queue> GetQueue();
 }

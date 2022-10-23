@@ -15,7 +15,8 @@ namespace VolumioServiceLibrary.Services;
 
 public class VolumioService : IVolumioService
 {
-    private static SocketIO? Client { get; set; }
+    private static SocketIO? Socket { get; set; }
+    private static readonly HttpClient client = new HttpClient();
 
     public event EventHandler? StatePushed;
     public event EventHandler? QueuePushed;
@@ -27,8 +28,8 @@ public class VolumioService : IVolumioService
 
     public async void OnInit()
     {
-        Client = new SocketIO("http://192.168.2.21:3000/");
-        Client.On("pushState", response =>
+        Socket = new SocketIO("http://volumio.local:3000/");
+        Socket.On("pushState", response =>
         {
             PlayerState? playerState = JsonConvert.DeserializeObject<PlayerState>(response.GetValue(0).ToString());
             if(playerState != null)
@@ -37,57 +38,74 @@ public class VolumioService : IVolumioService
             }         
         });
 
-        Client.On("pushQueue", response =>
+        Socket.On("pushQueue", response =>
         {
-            Queue? queue = JsonConvert.DeserializeObject<Queue>(response.GetValue(0).ToString());
-            if(queue != null)
+            List<QueueItem> queue = JsonConvert.DeserializeObject<List<QueueItem>>(response.GetValue(0).ToString());
+            if (queue != null)
             {
                 QueuePushed?.Invoke(queue, new EventArgs());
-            }         
+            }
+   
         });
 
-        await Client.ConnectAsync();
+        await Socket.ConnectAsync();
 
+    }
+
+    public async Task<Queue> GetQueue()
+    {
+        var response = await client.GetAsync("http://volumio.local/api/v1/getQueue");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var Content = await response.Content.ReadAsStringAsync();
+            Queue? queue = JsonConvert.DeserializeObject<Queue>(Content);
+            if (queue != null)
+            {
+                return queue;
+            }
+        }
+        return new Queue();
     }
 
     public async Task TogglePlayback()
     {
-        await Client!.EmitAsync("toggle");
+        await Socket!.EmitAsync("toggle");
     }
 
     public async Task NextTrack()
     {
-        await Client!.EmitAsync("next");
+        await Socket!.EmitAsync("next");
     }
 
     public async Task PreviousTrack()
     {
-        await Client!.EmitAsync("previous");
+        await Socket!.EmitAsync("previous");
     }
 
     public async Task MuteVolume()
     {
-        await Client!.EmitAsync("mute");
+        await Socket!.EmitAsync("mute");
     }
 
     public async Task UnmuteVolume()
     {
-        await Client!.EmitAsync("unmute");
+        await Socket!.EmitAsync("unmute");
     }
 
     public async Task ChangeVolume(int volume)
     {
-        await Client!.EmitAsync("volume", volume);
+        await Socket!.EmitAsync("volume", volume);
     }
 
     public async Task ChangeSeek(int? seconds)
     {
-        await Client!.EmitAsync("seek", seconds);
+        await Socket!.EmitAsync("seek", seconds);
     }
 
-    public async Task GetQueue()
-    {
-        await Client!.EmitAsync("getQueue");
-    }
+    //public async Task GetQueue()
+    //{
+    //    await Socket!.EmitAsync("getQueue");
+    //}
 }
 

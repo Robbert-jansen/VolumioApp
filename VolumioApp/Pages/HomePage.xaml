@@ -4,7 +4,6 @@
              xmlns:viewModels="clr-namespace:VolumioApp.PageModels"
              xmlns:converters="clr-namespace:VolumioApp.Converters"
              x:Class="VolumioApp.Pages.HomePage"
-             x:DataType="viewModels:HomePageModel"
              Title="HomePage" >
     <ContentPage.Resources>
         <converters:MilisecondToSecondConverter x:Key="msToSec" />
@@ -55,11 +54,16 @@
             <Button Style="{StaticResource MediaButton}" ImageSource="settings.png" HorizontalOptions="End" VerticalOptions="Center"  Command="{Binding EditPlaybackValuesCommand}"/>
         </Grid>
 
-        <BoxView Grid.RowSpan="2" BackgroundColor="#80C0C0C0"  VerticalOptions="Fill" HorizontalOptions="Fill" Margin="-32"  IsVisible="{Binding EditPlaybackValues}" >
+
+        <Grid Grid.Row="1">
+            <Button Style="{StaticResource MediaButton}" ImageSource="settings.png" HorizontalOptions="Start" VerticalOptions="Center"  Command="{Binding ShowQueueCommand}"/>
+        </Grid>
+
+        <BoxView Grid.RowSpan="2" BackgroundColor="#80C0C0C0"  VerticalOptions="Fill" HorizontalOptions="Fill" Margin="-32"  IsVisible="{Binding OverlayActive}" >
             <BoxView.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding EditPlaybackValuesCommand}" />
+                <TapGestureRecognizer Command="{Binding DisableOverlayCommand}" />
             </BoxView.GestureRecognizers>
-            
+
         </BoxView>
 
         <Frame IsVisible="{Binding EditPlaybackValues}" Grid.RowSpan="2" Margin="-16,0,-16,-16" CornerRadius="8" VerticalOptions="End" HorizontalOptions="Fill" HeightRequest="200"  BackgroundColor="{StaticResource LightGray}" Opacity="1">
@@ -70,8 +74,20 @@
                 <Slider Grid.Row="1" Value="{Binding PlayerState.Volume}" Maximum="100" DragCompletedCommand="{Binding VolumeSliderDragCompletedCommand}" VerticalOptions="Center" />
             </Grid>
         </Frame>
+        <Frame IsVisible="{Binding ShowQueue}" Grid.RowSpan="2" Margin="-16,0,-16,-16" CornerRadius="8" VerticalOptions="Fill" HorizontalOptions="Start" WidthRequest="200"  Padding="4"  BackgroundColor="{StaticResource LightGray}" Opacity="1" >
+            <CollectionView ItemsSource="{Binding Queue.QueueItems}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="60,*" RowDefinitions="60" Margin="0,0,0,4" ColumnSpacing="4">
+                            <Frame Padding="0" CornerRadius="8">
+                                <Image Source="{Binding AlbumArt}" VerticalOptions="Fill" HorizontalOptions="Fill" Aspect="AspectFill" />
+                            </Frame>
+                            <Label Text="{Binding Name}" Grid.Column="1" VerticalOptions="Center" TextColor="White" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Frame>
     </Grid>
-    
-        
 </ContentPage>
     
