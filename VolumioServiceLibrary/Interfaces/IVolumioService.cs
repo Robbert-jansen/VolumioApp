@@ -15,6 +15,8 @@ public interface IVolumioService
     #region Rest
     Task<PlayerState> GetPlayerState();
     Task<Queue> GetQueue();
+
+    Task PlayTrackFromQueue(int trackPosition);
     #endregion
 
     #region Socket.io

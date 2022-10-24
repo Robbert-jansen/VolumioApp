@@ -12,8 +12,8 @@
         <converters:MilisecondsToTimeConverter x:Key="MilisecondsToTime" />
         <converters:SecondsToTimeConverter x:Key="SecondsToTime" />
     </ContentPage.Resources>
-    <Grid RowDefinitions="*,40" Margin="32,32,32,32">
-        <VerticalStackLayout Spacing="4" Grid.Row="0" >
+    <Grid RowDefinitions="*,80" Margin="0">
+        <VerticalStackLayout Spacing="4" Grid.Row="0" Margin="32" >
             <Grid ColumnDefinitions="*,*" Margin="8,0,8,0">
                 <Label Text="{Binding PlayerState.Album}" TextColor="White" />
                 <StackLayout Orientation="Horizontal" Grid.Column="1" HorizontalOptions="End" Spacing="4">
@@ -50,22 +50,23 @@
 
         </VerticalStackLayout>
 
-        <Grid Grid.Row="1">
-            <ImageButton Style="{StaticResource MediaButton}" Source="playlist.png" HorizontalOptions="Start" VerticalOptions="Center"  Command="{Binding ShowQueueCommand}"/>
+        <Grid Grid.Row="1" >
+            <ImageButton Style="{StaticResource MediaButton}" Source="playlist.png" HorizontalOptions="Start" VerticalOptions="Center" HeightRequest="80" WidthRequest="80" Padding="10" Command="{Binding ShowQueueCommand}"/>
         </Grid>
 
+
         <Grid Grid.Row="1">
-            <ImageButton Style="{StaticResource MediaButton}" Source="control_panel.png" HorizontalOptions="End" VerticalOptions="Center"  Command="{Binding EditPlaybackValuesCommand}"/>
+            <ImageButton Style="{StaticResource MediaButton}" Source="control_panel.png" HorizontalOptions="End" VerticalOptions="Center" HeightRequest="80" WidthRequest="80" Padding="10" Command="{Binding EditPlaybackValuesCommand}"/>
         </Grid>
 
-        <BoxView Grid.RowSpan="2" BackgroundColor="#80C0C0C0"  VerticalOptions="Fill" HorizontalOptions="Fill" Margin="-32"  IsVisible="{Binding OverlayActive}" >
+        <BoxView Grid.RowSpan="2" BackgroundColor="#80C0C0C0"  VerticalOptions="Fill" HorizontalOptions="Fill" Margin="0"  IsVisible="{Binding OverlayActive}" >
             <BoxView.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding DisableOverlayCommand}" />
             </BoxView.GestureRecognizers>
 
         </BoxView>
 
-        <Frame IsVisible="{Binding EditPlaybackValues}" Grid.RowSpan="2" Margin="-16,0,-16,-16" CornerRadius="8" VerticalOptions="End" HorizontalOptions="Fill" HeightRequest="200"  BackgroundColor="{StaticResource LightGray}" Opacity="1">
+        <Frame IsVisible="{Binding EditPlaybackValues}" Grid.RowSpan="2" Margin="16" CornerRadius="8" VerticalOptions="End" HorizontalOptions="Fill" HeightRequest="200"  BackgroundColor="{StaticResource LightGray}" Opacity="1">
             <Grid RowDefinitions="*,*">
                 <ImageButton Source="volume.png" Style="{StaticResource MediaButton}" Command="{Binding UnmuteCommand}" HorizontalOptions="Start" VerticalOptions="Center" />
                 <ImageButton Source="mute.png" Style="{StaticResource MediaButton}" Command="{Binding MuteCommand}" HorizontalOptions="End" VerticalOptions="Center"/>
@@ -73,21 +74,34 @@
                 <Slider Grid.Row="1" Value="{Binding PlayerState.Volume}" Maximum="100" DragCompletedCommand="{Binding VolumeSliderDragCompletedCommand}" DragStartedCommand="{Binding VolumeSliderDragStartedCommand}" VerticalOptions="Center" />
             </Grid>
         </Frame>
-        <Frame IsVisible="{Binding ShowQueue}" Grid.RowSpan="2" Margin="-32" CornerRadius="0" VerticalOptions="Fill" HorizontalOptions="Fill"  Padding="0"  BackgroundColor="#E6000000" Opacity="1" >
+        <Frame IsVisible="{Binding ShowQueue}" Grid.RowSpan="2" Margin="0" CornerRadius="0" VerticalOptions="Fill" HorizontalOptions="Fill"  Padding="0"  BackgroundColor="#E6000000" Opacity="1" >
             <Grid RowDefinitions="80,*">
                
-                <CollectionView ItemsSource="{Binding Queue.QueueItems}" Grid.Row="1" Grid.RowSpan="1" Margin="4">
+                <CollectionView ItemsSource="{Binding Queue.QueueItems}" x:Name="queueCollectionView" Grid.Row="0" Grid.RowSpan="2" Margin="4">
                     <CollectionView.Header>
-                        <Grid HeightRequest="40" />
+                        <Grid HeightRequest="80" />
                     </CollectionView.Header>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Grid ColumnDefinitions="60,*" RowDefinitions="60" Margin="0,0,0,4" ColumnSpacing="4">
-                                <Frame Padding="0" CornerRadius="8">
-                                    <Image Source="{Binding AlbumArt}" VerticalOptions="Fill" HorizontalOptions="Fill" Aspect="AspectFill" />
-                                </Frame>
-                                <Label Text="{Binding Name}" Grid.Column="1" VerticalOptions="Center" TextColor="White" />
-                            </Grid>
+                            <SwipeView >
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Favorite"
+                                                   IconImageSource="close.png"
+                                                   BackgroundColor="LightGreen"
+                                                   Command="{Binding Source={x:Reference queueCollectionView}, Path=BindingContext.PlayFromQueueCommand}"
+                                                   CommandParameter="{Binding}" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <Grid ColumnDefinitions="60,*" RowDefinitions="60" Margin="0,0,0,4" ColumnSpacing="4" BackgroundColor="Black">
+                                    <Frame Padding="0" CornerRadius="8" HasShadow="False" BorderColor="Transparent">
+                                        <Image Source="{Binding AlbumArt}" VerticalOptions="Fill" HorizontalOptions="Fill" Aspect="AspectFill" />
+                                    </Frame>
+                                    <Label Text="{Binding Name}" Grid.Column="1" VerticalOptions="Center" TextColor="White" />
+                                    <Label Text="Is Playing" IsVisible="{Binding IsPlaying}" Grid.Column="1" VerticalOptions="End" TextColor="Green"/>
+                                </Grid>
+                            </SwipeView>
+
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
@@ -101,7 +115,7 @@
                         </LinearGradientBrush>
                     </BoxView.Background>
                 </BoxView>
-                <ImageButton Style="{StaticResource MediaButton}" Source="close.png" VerticalOptions="Center" HorizontalOptions="Fill" WidthRequest="90"  Command="{Binding DisableOverlayCommand}" BackgroundColor="Orange"/>
+                <ImageButton  Source="close.png" VerticalOptions="Center" HorizontalOptions="End" WidthRequest="80" HeightRequest="80" Padding="10"  Command="{Binding DisableOverlayCommand}" />
             </Grid>
 
         </Frame>

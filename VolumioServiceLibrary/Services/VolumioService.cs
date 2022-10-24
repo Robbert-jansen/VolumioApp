@@ -10,7 +10,7 @@ namespace VolumioServiceLibrary.Services;
 public class VolumioService : IVolumioService
 {
     private static SocketIO? Socket { get; set; }
-    private static readonly HttpClient client = new HttpClient();
+    private static HttpClient client = new HttpClient();
 
     // Socket EventHandlers
     public event EventHandler? StatePushed;
@@ -30,15 +30,17 @@ public class VolumioService : IVolumioService
         // Creates listeners for events emitted by server.
         Socket.On("pushState", response =>
         {
+            Debug.WriteLine("State pushed");
             PlayerState? playerState = JsonConvert.DeserializeObject<PlayerState>(response.GetValue(0).ToString());
             if(playerState != null)
             {
                 StatePushed?.Invoke(playerState, new EventArgs());
-            }         
+            }              
         });
 
         Socket.On("pushQueue", response =>
         {
+            Debug.WriteLine("Queue pushed");
             List<QueueItem> queue = JsonConvert.DeserializeObject<List<QueueItem>>(response.GetValue(0).ToString());
             if (queue != null)
             {
@@ -51,7 +53,18 @@ public class VolumioService : IVolumioService
         Socket.OnConnected += Socket_OnConnected;
 
         // Connects to socket.
-        await Socket.ConnectAsync();
+        try
+        {
+            await Socket.ConnectAsync();
+        }
+        catch (Exception e)
+        {
+            Socket = new SocketIO("http://192.168.2.21:3000/");
+            client = new HttpClient();
+            client.BaseAddress = new Uri("http://192.168.2.21/api/v1/");
+            await Socket.ConnectAsync();
+        }
+        
 
     }
 
@@ -69,6 +82,10 @@ public class VolumioService : IVolumioService
         return (PlayerState)await GetAsync(typeof(PlayerState), "getState");
     }
 
+    public async Task PlayTrackFromQueue(int trackPosition)
+    {
+        await client.GetAsync("commands/?cmd=play&N=" + trackPosition);
+    }
 
     // Is this nececcary? probably not but it's cool.
     private static async Task<object> GetAsync(Type returnType, string uri)

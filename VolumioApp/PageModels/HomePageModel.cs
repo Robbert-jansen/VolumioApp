@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using Android.App.Admin;
+using System.Windows.Input;
 using VolumioModelLibrary.Enums;
 using VolumioModelLibrary.Models;
 using VolumioServiceLibrary.Interfaces;
@@ -30,6 +31,8 @@ public class HomePageModel : BasePageModel
     public ICommand VolumeSliderDragCompletedCommand { get; set; }
     public ICommand SeekSliderDragCompletedCommand { get; set; }
     public ICommand SeekSliderDragStartedCommand { get; set; }
+
+    public ICommand PlayFromQueueCommand { get; set; }
 
     #endregion
 
@@ -90,6 +93,12 @@ public class HomePageModel : BasePageModel
             ShowQueue = !ShowQueue;
         });
 
+        PlayFromQueueCommand = new Command<QueueItem>(async (QueueItem queueItem) =>
+        {
+            var indexOfQueueitem = Queue.QueueItems.IndexOf(queueItem);
+            await _volumioService.PlayTrackFromQueue(indexOfQueueitem);
+        });
+
         Init();
     }
 
@@ -139,6 +148,8 @@ public class HomePageModel : BasePageModel
 
         Queue queue = await _volumioService.GetQueue();
         Queue = queue;
+
+        MarkPlayingSongInQueue();
         // Setting ImageSource to null before setting it to the new one prevents a crash on Android when the image is the same and previously.
         ImageSource = null;
         ImageSource = ImageSource.FromUri(new Uri(PlayerState.AlbumArt));
@@ -151,6 +162,8 @@ public class HomePageModel : BasePageModel
         Queue.QueueItems.Clear();
         Queue.QueueItems = (List<QueueItem>)sender;
 
+        MarkPlayingSongInQueue();
+
     }
     private void VolumioService_StatePushed(object sender, EventArgs e)
     {
@@ -158,6 +171,21 @@ public class HomePageModel : BasePageModel
 
         ImageSource = null;
         ImageSource = ImageSource.FromUri(new Uri(PlayerState.AlbumArt));
+
+        MarkPlayingSongInQueue();
+    }
+
+    private void MarkPlayingSongInQueue()
+    {
+        foreach (QueueItem queueItem in Queue.QueueItems)
+        {
+            queueItem.IsPlaying = false;
+            if (queueItem.Uri == PlayerState.Uri)
+            {
+                queueItem.IsPlaying = true;
+            }
+
+        }
     }
 
     #endregion

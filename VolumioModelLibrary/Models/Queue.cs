@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace VolumioModelLibrary.Models;
 
-public class QueueItem
+public class QueueItem : INotifyPropertyChanged
 {
     
     public string? Uri { get; set; }
@@ -14,6 +14,9 @@ public class QueueItem
     public string? Type { get; set; }
     public int? TrackNumber { get; set; }
     private string? _albumArt;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     public string? AlbumArt
     {
         get => _albumArt;
@@ -35,6 +38,8 @@ public class QueueItem
     public string? SampleRate { get; set; }
     public string? BitDepth { get; set; }
     public int? Channels { get; set; }
+
+    public bool IsPlaying { get; set; }
 }
 
 public class Queue : INotifyPropertyChanged
