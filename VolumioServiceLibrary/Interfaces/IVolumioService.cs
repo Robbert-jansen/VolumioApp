@@ -12,6 +12,12 @@ public interface IVolumioService
     public event EventHandler StatePushed;
     public event EventHandler QueuePushed;
 
+    #region Rest
+    Task<PlayerState> GetPlayerState();
+    Task<Queue> GetQueue();
+    #endregion
+
+    #region Socket.io
     Task TogglePlayback();
 
     Task NextTrack();
@@ -25,6 +31,5 @@ public interface IVolumioService
     Task ChangeVolume(int volume);
 
     Task ChangeSeek(int? seconds);
-
-    Task<Queue> GetQueue();
+    #endregion
 }

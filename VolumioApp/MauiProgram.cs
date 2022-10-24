@@ -27,7 +27,7 @@ public static class MauiProgram
     // Registers services for use in App.
     public static MauiAppBuilder RegisterAppServices(this MauiAppBuilder mauiAppBuilder)
     {
-        mauiAppBuilder.Services.AddSingleton<IVolumioRestService, VolumioRestService>();
+        mauiAppBuilder.Services.AddSingleton<IVolumioService, VolumioService>();
 
         return mauiAppBuilder;
     }

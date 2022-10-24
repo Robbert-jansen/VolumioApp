@@ -12,6 +12,7 @@ public class VolumioService : IVolumioService
     private static SocketIO? Socket { get; set; }
     private static readonly HttpClient client = new HttpClient();
 
+    // Socket EventHandlers
     public event EventHandler? StatePushed;
     public event EventHandler? QueuePushed;
 
@@ -22,7 +23,11 @@ public class VolumioService : IVolumioService
 
     public async void OnInit()
     {
+        // Create new socket with server connection.
         Socket = new SocketIO("http://volumio.local:3000/");
+        client.BaseAddress = new Uri("http://volumio.local/api/v1/");
+
+        // Creates listeners for events emitted by server.
         Socket.On("pushState", response =>
         {
             PlayerState? playerState = JsonConvert.DeserializeObject<PlayerState>(response.GetValue(0).ToString());
@@ -41,76 +46,110 @@ public class VolumioService : IVolumioService
             }
    
         });
-        Debug.WriteLine("!!!!!!!!!!!!!!!Socket Connecting: " + Socket.Connected);
-        Debug.WriteLine("!!!!!!!!!!!!!!!Socket Connecting: " + Socket.Connected);
-        Debug.WriteLine("!!!!!!!!!!!!!!!Socket Connecting: " + Socket.Connected);
-        Debug.WriteLine("!!!!!!!!!!!!!!!Socket Connecting: " + Socket.Connected);
-        Debug.WriteLine("!!!!!!!!!!!!!!!Socket Connecting: " + Socket.Connected);
-        Debug.WriteLine("!!!!!!!!!!!!!!!Socket Connecting: " + Socket.Connected);
+
+        Socket.OnDisconnected += Socket_OnDisconnected;
+        Socket.OnConnected += Socket_OnConnected;
+
+        // Connects to socket.
         await Socket.ConnectAsync();
-        Debug.WriteLine("!!!!!!!!!!!!!!!Socket connected: " + Socket.Connected);
-        Debug.WriteLine("!!!!!!!!!!!!!!!Socket connected: " + Socket.Connected);
-        Debug.WriteLine("!!!!!!!!!!!!!!!Socket connected: " + Socket.Connected);
-        Debug.WriteLine("!!!!!!!!!!!!!!!Socket connected: " + Socket.Connected);
-        Debug.WriteLine("!!!!!!!!!!!!!!!Socket connected: " + Socket.Connected);
-        Debug.WriteLine("!!!!!!!!!!!!!!!Socket connected: " + Socket.Connected);
 
     }
 
+
+    #region Rest
+
+    // HTTP Requests.
     public async Task<Queue> GetQueue()
     {
-        var response = await client.GetAsync("http://volumio.local/api/v1/getQueue");
+        return (Queue)await GetAsync(typeof(Queue), "getQueue");
+    }
+
+    public async Task<PlayerState> GetPlayerState()
+    {
+        return (PlayerState)await GetAsync(typeof(PlayerState), "getState");
+    }
+
+
+    // Is this nececcary? probably not but it's cool.
+    private static async Task<object> GetAsync(Type returnType, string uri)
+    {
+        var response = await client.GetAsync(uri);
 
         if (response.IsSuccessStatusCode)
         {
             var Content = await response.Content.ReadAsStringAsync();
-            Queue? queue = JsonConvert.DeserializeObject<Queue>(Content);
-            if (queue != null)
+            object returnObject = JsonConvert.DeserializeObject(Content, returnType);
+            if (returnObject != null)
             {
-                return queue;
+                return returnObject;
             }
         }
-        return new Queue();
+
+        return Activator.CreateInstance(returnType); 
     }
 
+    #endregion
+
+    #region Socket.io
+
+    // Socket connection handlers.
+    private void Socket_OnConnected(object? sender, EventArgs e)
+    {
+        Debug.WriteLine("!!!!!!!!!!!!!!!Socket connected");
+    }
+    private void Socket_OnDisconnected(object? sender, string e)
+    {
+        Debug.WriteLine("!!!!!!!!!!!!!!!Socket Disconnected");
+    }
+
+    // Socket Emit methods.
     public async Task TogglePlayback()
     {
-        await Socket!.EmitAsync("toggle");
+        await EmitAsync("toggle");
     }
 
     public async Task NextTrack()
     {
-        await Socket!.EmitAsync("next");
+        await EmitAsync("next");
     }
 
     public async Task PreviousTrack()
     {
-        await Socket!.EmitAsync("previous");
+        await EmitAsync("previous");
     }
 
     public async Task MuteVolume()
     {
-        await Socket!.EmitAsync("mute");
+        await EmitAsync("mute");
     }
 
     public async Task UnmuteVolume()
     {
-        await Socket!.EmitAsync("unmute");
+        await EmitAsync("unmute");
     }
 
     public async Task ChangeVolume(int volume)
     {
-        await Socket!.EmitAsync("volume", volume);
+        await EmitAsync("volume", volume);
     }
 
     public async Task ChangeSeek(int? seconds)
     {
-        await Socket!.EmitAsync("seek", seconds);
+        if(seconds.HasValue)
+        {
+            await EmitAsync("seek", seconds);
+        }
     }
 
-    //public async Task GetQueue()
-    //{
-    //    await Socket!.EmitAsync("getQueue");
-    //}
+    // Wraps EmitAsync in method to handle it in one place.
+    private async Task EmitAsync(string eventName, params object[] data)
+    {
+        if(Socket != null && Socket.Connected)
+        {
+            await Socket!.EmitAsync(eventName, data);
+        }
+    }
+
+    #endregion
 }
 

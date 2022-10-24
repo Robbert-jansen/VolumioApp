@@ -7,7 +7,6 @@ namespace VolumioApp.PageModels;
 
 public class HomePageModel : BasePageModel
 {
-    private readonly IVolumioRestService _volumioRestService;
     private readonly IVolumioService _volumioService;
 
     //private readonly VolumioSocketIOService _volumioSocketIOService;
@@ -22,8 +21,12 @@ public class HomePageModel : BasePageModel
     public ICommand VolumeSliderDragCompletedCommand { get; set; }
     public ICommand SeekSliderDragCompletedCommand { get; set; }
 
+    public ICommand SeekSliderDragStartedCommand { get; set; }
+
     public ICommand DisableOverlayCommand { get; set; }
     public bool EditPlaybackValues { get; set; }
+
+    public bool IsInterpolating { get; set; } = true;
 
     public bool ShowQueue { get; set; }
 
@@ -59,11 +62,9 @@ public class HomePageModel : BasePageModel
 
     // Used because of a crash on Android, if that ever gets fixed you can bind straight to the Albumart in PlayerState.
     public ImageSource ImageSource { get; set; }
-    public HomePageModel(IVolumioRestService volumioRestService)
-    {
-        _volumioRestService = volumioRestService;
-        //_volumioSocketIOService = new VolumioSocketIOService();
-        _volumioService = new VolumioService();
+    public HomePageModel(IVolumioService volumioService)
+    { 
+        _volumioService = volumioService;
         _volumioService.StatePushed += _volumioService_StatePushed;
         _volumioService.QueuePushed += _volumioService_QueuePushed;
 
@@ -107,12 +108,19 @@ public class HomePageModel : BasePageModel
 
         VolumeSliderDragCompletedCommand = new Command( () =>
         {
-            _volumioService.ChangeVolume(PlayerState.Volume);
+            _volumioService.ChangeVolume((int)PlayerState.Volume);
         });
 
         SeekSliderDragCompletedCommand = new Command( () =>
         {
             _volumioService.ChangeSeek(PlayerState.Seek / 1000);
+            IsInterpolating = true;
+        });
+
+        SeekSliderDragStartedCommand = new Command(() =>
+        {
+            IsInterpolating = false;
+            //_volumioService.ChangeSeek(PlayerState.Seek / 1000);
         });
 
         DisableOverlayCommand = new Command(() =>
@@ -140,7 +148,7 @@ public class HomePageModel : BasePageModel
 
     private async void TogglePlayback()
     {
-        PlayerState.IsPlaying = !PlayerState.IsPlaying;
+        //PlayerState.IsPlaying = !PlayerState.IsPlaying;
        await _volumioService.TogglePlayback();
        //await LoadDataAsync();
     }
@@ -174,7 +182,7 @@ public class HomePageModel : BasePageModel
 
     private void IncrementSeek()
     {
-        if (PlayerState.IsPlaying)
+        if (PlayerState.IsPlaying && IsInterpolating)
         {
             PlayerState.Seek += 1000;
         }
@@ -188,7 +196,7 @@ public class HomePageModel : BasePageModel
     {
         System.Diagnostics.Debug.WriteLine("Load data");
 
-       PlayerState playerState = await _volumioRestService.GetPlayerState();
+       PlayerState playerState = await _volumioService.GetPlayerState();
         PlayerState = playerState;
 
         Queue queue = await _volumioService.GetQueue();

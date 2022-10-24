@@ -65,11 +65,11 @@ public class PlayerState : INotifyPropertyChanged
 
     public string? SampleRate { get; set; }
     public string? BitDepth { get; set; }
-    public object? Random { get; set; }
-    public object? Repeat { get; set; }
+    public bool? Random { get; set; }
+    public bool? Repeat { get; set; }
     public bool RepeatSingle { get; set; }
     public bool Consume { get; set; }
-    public int Volume { get; set; }
+    public int? Volume { get; set; }
     public object? DbVolume { get; set; }
     public bool DisableVolumeControl { get; set; }
     public bool Mute { get; set; }

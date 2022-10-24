@@ -38,52 +38,34 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
 	  <MtouchLink>None</MtouchLink>
-	  <EnableLLVM>True</EnableLLVM>
-	  <AndroidLinkTool>r8</AndroidLinkTool>
-	  <AndroidEnableMultiDex>True</AndroidEnableMultiDex>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
 	  <MtouchLink>None</MtouchLink>
-	  <EnableLLVM>True</EnableLLVM>
-	  <AndroidLinkTool>r8</AndroidLinkTool>
-	  <AndroidEnableMultiDex>True</AndroidEnableMultiDex>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|AnyCPU'">
 	  <MtouchLink>None</MtouchLink>
-	  <EnableLLVM>True</EnableLLVM>
-	  <AndroidLinkTool>r8</AndroidLinkTool>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-ios|AnyCPU'">
 	  <MtouchLink>None</MtouchLink>
-	  <EnableLLVM>True</EnableLLVM>
-	  <AndroidLinkTool>r8</AndroidLinkTool>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-maccatalyst|AnyCPU'">
 	  <MtouchLink>None</MtouchLink>
-	  <EnableLLVM>True</EnableLLVM>
-	  <AndroidLinkTool>r8</AndroidLinkTool>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-maccatalyst|AnyCPU'">
 	  <MtouchLink>None</MtouchLink>
-	  <EnableLLVM>True</EnableLLVM>
-	  <AndroidLinkTool>r8</AndroidLinkTool>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
 	  <MtouchLink>None</MtouchLink>
-	  <EnableLLVM>True</EnableLLVM>
-	  <AndroidLinkTool>r8</AndroidLinkTool>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">
 	  <MtouchLink>None</MtouchLink>
-	  <EnableLLVM>True</EnableLLVM>
-	  <AndroidLinkTool>r8</AndroidLinkTool>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -95,7 +77,6 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -105,11 +86,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\close.svg" />
+	  <None Remove="Resources\Images\control_panel.svg" />
 	  <None Remove="Resources\Images\mute.svg" />
 	  <None Remove="Resources\Images\pause.svg" />
 	  <None Remove="Resources\Images\play.svg" />
+	  <None Remove="Resources\Images\playlist.svg" />
+	  <None Remove="Resources\Images\repeat.svg" />
 	  <None Remove="Resources\Images\rewind.svg" />
-	  <None Remove="Resources\Images\settings.svg" />
+	  <None Remove="Resources\Images\shuffle.svg" />
 	  <None Remove="Resources\Images\skip.svg" />
 	  <None Remove="Resources\Images\volume.svg" />
 	</ItemGroup>

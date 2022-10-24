@@ -1,9 +1,6 @@
-<svg version="1.1" id="Uploaded to svgrepo.com" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="32px" height="32px" viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
-<style type="text/css">
-	.puchipuchi_een{fill:#FFFFFF;}
-</style>
-<path class="puchipuchi_een" d="M28.448,17.261L15.552,27.739C14.698,28.432,14,28.1,14,27v-6.938l-9.448,7.676
-	C3.698,28.432,3,28.1,3,27V5c0-1.1,0.698-1.432,1.552-0.739L14,11.937V5c0-1.1,0.698-1.432,1.552-0.739l12.896,10.478
-	C29.302,15.432,29.302,16.568,28.448,17.261z"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 96 96" width="96px" height="96px">
+<g id="surface39986724">
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 30.804688 14.992188 C 29.828125 14.992188 28.839844 15.207031 27.902344 15.640625 C 25.496094 16.757812 24 19.089844 24 21.722656 L 24 74.277344 C 24 76.910156 25.496094 79.238281 27.902344 80.355469 C 30.304688 81.46875 33.042969 81.132812 35.082031 79.472656 L 69 55.230469 L 69 78 C 69 79.65625 70.34375 81 72 81 C 73.65625 81 75 79.65625 75 78 L 75 18 C 75 16.34375 73.65625 15 72 15 C 70.34375 15 69 16.34375 69 18 L 69 40.769531 L 35.082031 16.527344 C 33.835938 15.515625 32.335938 14.992188 30.804688 14.992188 Z M 30.804688 14.992188 "/>
+</g>
 </svg>
