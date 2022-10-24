@@ -1,6 +1,6 @@
 ﻿namespace VolumioModelLibrary.Enums;
 
-public enum VolumioActions
+public enum VolumioAction
 {
     TogglePlayback,
     NextTrack,

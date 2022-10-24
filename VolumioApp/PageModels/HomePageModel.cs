@@ -60,44 +60,18 @@ public class HomePageModel : BasePageModel
         _volumioService.StatePushed += VolumioService_StatePushed;
         _volumioService.QueuePushed += VolumioService_QueuePushed;
 
-        // Intializes commands
-        TogglePlaybackCommand = new Command(() =>
-        {
-            _volumioService.TogglePlayback();
-        });
-        PreviousTrackCommand = new Command(() =>
-        {
-            _volumioService.PreviousTrack();
-        });
-        NextTrackCommand = new Command(() =>
-        {
-            _volumioService.NextTrack();
-        });
-        MuteCommand = new Command(() =>
-        {
-            _volumioService.MuteVolume();
-        });
-        UnmuteCommand = new Command(() =>
-        {
-            _volumioService.UnmuteVolume();
-        });
-        EditPlaybackValuesCommand = new Command(async () =>
-        {
-            EditPlaybackValues = !EditPlaybackValues;
-        });
-        ShowQueueCommand = new Command(async () =>
-        {
-            ShowQueue = !ShowQueue;
-        });
-        VolumeSliderDragCompletedCommand = new Command(() =>
-        {
-            _volumioService.ChangeVolume((int)PlayerState.Volume);
-        });
-        SeekSliderDragCompletedCommand = new Command(() =>
-        {
-            _volumioService.ChangeSeek(PlayerState.Seek / 1000);
-            IsInterpolating = true;
-        });
+        // Volumio Action Commands
+        TogglePlaybackCommand = new Command(async () => await ExecuteVolumioAction(VolumioAction.TogglePlayback));
+        PreviousTrackCommand = new Command(async () => await ExecuteVolumioAction(VolumioAction.PreviousTrack));
+        NextTrackCommand = new Command(async () => await ExecuteVolumioAction(VolumioAction.NextTrack));
+        MuteCommand = new Command(async () => await ExecuteVolumioAction(VolumioAction.MuteVolume));
+        UnmuteCommand = new Command(async () => await ExecuteVolumioAction(VolumioAction.UnmuteVolume));
+        
+        // Volumio Actions triggered by sliders.
+        VolumeSliderDragCompletedCommand = new Command(async () => await ExecuteVolumioAction(VolumioAction.SetVolume));
+        SeekSliderDragCompletedCommand = new Command(async () => await ExecuteVolumioAction(VolumioAction.SetSeek));
+
+        // Other Commands
         SeekSliderDragStartedCommand = new Command(() =>
         {
             IsInterpolating = false;
@@ -107,10 +81,47 @@ public class HomePageModel : BasePageModel
             EditPlaybackValues = false;
             ShowQueue = false;
         });
+        EditPlaybackValuesCommand = new Command(() =>
+        {
+            EditPlaybackValues = !EditPlaybackValues;
+        });
+        ShowQueueCommand = new Command(() =>
+        {
+            ShowQueue = !ShowQueue;
+        });
 
         Init();
     }
 
+    private async Task ExecuteVolumioAction (VolumioAction volumioAction)
+    {
+        switch (volumioAction)
+        {
+            case VolumioAction.TogglePlayback: 
+                await _volumioService.TogglePlayback();
+                break;
+            case VolumioAction.NextTrack:
+                await _volumioService.NextTrack();
+                break;
+            case VolumioAction.PreviousTrack:
+                await _volumioService.PreviousTrack();
+                break;
+            case VolumioAction.MuteVolume:
+                await _volumioService.MuteVolume();
+                break;
+            case VolumioAction.UnmuteVolume:
+                await _volumioService.UnmuteVolume();
+                break;
+            case VolumioAction.SetVolume:
+                await _volumioService.ChangeVolume((int)PlayerState.Volume);
+                break;
+            case VolumioAction.SetSeek:
+                await _volumioService.ChangeSeek(PlayerState.Seek / 1000);
+                break;
+            default:
+                break;
+        }
+    }
     private async void Init()
     {
         // Double load on init is intentional
