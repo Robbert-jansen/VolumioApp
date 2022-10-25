@@ -8,15 +8,15 @@ namespace VolumioApp.Pages;
 
 public partial class HomePage : ContentPage
 {
-	private int upperBound = 110;
-	private int lowerBound = 95;
+	private int upperBound = 130;
+	private int lowerBound = 115;
 	public HomePage(HomePageModel homePageModel)
 	{
 		InitializeComponent();
 		this.BindingContext = homePageModel;
 
 
-        OnInit();
+        //OnInit();
 		//
         //RotateImage();
 		//ScaleImage();
@@ -25,6 +25,11 @@ public partial class HomePage : ContentPage
         //ScaleEllipse3();
         //ScaleEllipse4();
         //ScaleEllipse2();
+    }
+
+    void OnTapGestureRecognizerTapped(object sender, EventArgs args)
+    {
+        OnInit();
     }
 
     private async Task OnInit()
