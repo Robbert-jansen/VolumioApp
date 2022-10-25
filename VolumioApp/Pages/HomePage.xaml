@@ -41,9 +41,18 @@
             </Grid>
 
             <FlexLayout Direction="Row" AlignItems="Center" JustifyContent="SpaceEvenly"  HeightRequest="40">
-                <ImageButton Source="rewind.png" Style="{StaticResource MediaButton}" Command="{Binding PreviousTrackCommand}" />
-                <ImageButton Style="{StaticResource MediaButton}" Source="play.png" IsVisible="{Binding PlayerState.IsPlaying, Converter={StaticResource InvertBool}}" Command="{Binding TogglePlaybackCommand}"/>
-                <ImageButton Style="{StaticResource MediaButton}" Source="pause.png" IsVisible="{Binding PlayerState.IsPlaying}" Command="{Binding TogglePlaybackCommand}" />
+                <ImageButton Source="rewind.png" Style="{StaticResource MediaButton}" Command="{Binding PreviousTrackCommand}"  BackgroundColor="Grey" CornerRadius="30" Padding="10" WidthRequest="60" HeightRequest="60"/>
+                <Grid WidthRequest="120" HeightRequest="120">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TogglePlaybackCommand}" />
+                    </Grid.GestureRecognizers>
+                    <Image Source="play_button_background" x:Name="playButtonImage" />
+                    <Image  Source="pause.png" IsVisible="{Binding PlayerState.IsPlaying}" WidthRequest="40" />
+                    <Image  Source="play.png" IsVisible="{Binding PlayerState.IsPlaying, Converter={StaticResource InvertBool}}" WidthRequest="40" />
+                    <!--ImageButton Style="{StaticResource MediaButton}" Source="pause.png" IsVisible="{Binding PlayerState.IsPlaying}" Command="{Binding TogglePlaybackCommand}" />
+                    <ImageButton Style="{StaticResource MediaButton}" Source="play.png" IsVisible="{Binding PlayerState.IsPlaying, Converter={StaticResource InvertBool}}" Command="{Binding TogglePlaybackCommand}"/-->
+                </Grid>
+                
                 <ImageButton Source="skip.png" Style="{StaticResource MediaButton}" Command="{Binding NextTrackCommand}" />
             </FlexLayout>
 

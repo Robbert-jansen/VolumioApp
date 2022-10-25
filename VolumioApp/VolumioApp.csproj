@@ -92,6 +92,7 @@
 	  <None Remove="Resources\Images\pause.svg" />
 	  <None Remove="Resources\Images\play.svg" />
 	  <None Remove="Resources\Images\playlist.svg" />
+	  <None Remove="Resources\Images\play_button_background.svg" />
 	  <None Remove="Resources\Images\repeat.svg" />
 	  <None Remove="Resources\Images\rewind.svg" />
 	  <None Remove="Resources\Images\shuffle.svg" />
