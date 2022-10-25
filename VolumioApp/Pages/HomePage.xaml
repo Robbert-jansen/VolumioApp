@@ -46,7 +46,16 @@
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding TogglePlaybackCommand}" />
                     </Grid.GestureRecognizers>
-                    <Image Source="play_button_background" x:Name="playButtonImage" />
+                    <Grid x:Name="EllipseGrid">
+                        <Ellipse x:Name="Ellipse1" VerticalOptions="Center"  HorizontalOptions="Center" WidthRequest="120" HeightRequest="100" Fill="#87CEEB" Rotation="90" Opacity="0.9"/>
+                        <Ellipse x:Name="Ellipse2" VerticalOptions="Center"  HorizontalOptions="Center" WidthRequest="120" HeightRequest="100" Fill="#A020F0" Rotation="45"  Opacity="0.8"/>
+                        <Ellipse x:Name="Ellipse3" VerticalOptions="Center"  HorizontalOptions="Center" WidthRequest="120" HeightRequest="100" Fill="#FFC0CB" Rotation="135" Opacity="0.7"/>
+                        <Ellipse x:Name="Ellipse4" VerticalOptions="Center"  HorizontalOptions="Center" WidthRequest="120" HeightRequest="100" Fill="#FFA500" Opacity="0.6"/>
+                    </Grid>
+
+                    
+                    <Frame WidthRequest="100" HeightRequest="100" CornerRadius="50" BackgroundColor="#301934" />
+                    <!--Image Source="play_button_background" x:Name="playButtonImage" /-->
                     <Image  Source="pause.png" IsVisible="{Binding PlayerState.IsPlaying}" WidthRequest="40" />
                     <Image  Source="play.png" IsVisible="{Binding PlayerState.IsPlaying, Converter={StaticResource InvertBool}}" WidthRequest="40" />
                     <!--ImageButton Style="{StaticResource MediaButton}" Source="pause.png" IsVisible="{Binding PlayerState.IsPlaying}" Command="{Binding TogglePlaybackCommand}" />
