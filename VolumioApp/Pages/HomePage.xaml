@@ -53,11 +53,20 @@
                         <Ellipse x:Name="Ellipse4" VerticalOptions="Center"  HorizontalOptions="Center" WidthRequest="120" HeightRequest="100" Fill="#FFA500" Opacity="0.6"/>
                     </Grid>
 
-                    
-                    <Frame WidthRequest="100" HeightRequest="100" CornerRadius="50" BackgroundColor="#301934" />
+
+                    <Frame WidthRequest="100" HeightRequest="100" CornerRadius="50" BackgroundColor="#301934" >
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TogglePlaybackCommand}" />
+                        </Frame.GestureRecognizers>
+                        <Grid>
+                            <Image  Source="play.png" IsVisible="{Binding PlayerState.IsPlaying, Converter={StaticResource InvertBool}}" WidthRequest="40" HeightRequest="40"/>
+                            <Image  Source="pause.png" IsVisible="{Binding PlayerState.IsPlaying}" WidthRequest="40" HeightRequest="40" />
+                        </Grid>
+
+                    </Frame>
                     <!--Image Source="play_button_background" x:Name="playButtonImage" /-->
-                    <Image  Source="pause.png" IsVisible="{Binding PlayerState.IsPlaying}" WidthRequest="40" />
-                    <Image  Source="play.png" IsVisible="{Binding PlayerState.IsPlaying, Converter={StaticResource InvertBool}}" WidthRequest="40" />
+                    
+                    <Image  Source="play.png" IsVisible="{Binding PlayerState.IsPlaying, Converter={StaticResource InvertBool}}" WidthRequest="40" HeightRequest="60"/>
                     <!--ImageButton Style="{StaticResource MediaButton}" Source="pause.png" IsVisible="{Binding PlayerState.IsPlaying}" Command="{Binding TogglePlaybackCommand}" />
                     <ImageButton Style="{StaticResource MediaButton}" Source="play.png" IsVisible="{Binding PlayerState.IsPlaying, Converter={StaticResource InvertBool}}" Command="{Binding TogglePlaybackCommand}"/-->
                 </Grid>
