@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:VolumioApp.PageModels"
              xmlns:converters="clr-namespace:VolumioApp.Converters"
+             xmlns:buttons="clr-namespace:VolumioApp.Views.Buttons"
              x:Class="VolumioApp.Pages.HomePage"
              Title="HomePage" >
     <ContentPage.Resources>
@@ -30,7 +31,7 @@
             VerticalOptions="Center" 
             HorizontalOptions="Fill">
 
-                <Image Source="{Binding ImageSource}" Aspect="AspectFit"/>
+                <Image Source="{Binding PlayerState.AlbumArt}" Aspect="AspectFit"/>
             </Frame>
             <Label Text="{Binding PlayerState.Title}"  Margin="24,0,0,0" FontSize="Medium" TextColor="White" FontAttributes="Bold"/>
             <Label Text="{Binding PlayerState.Artist}"  Margin="24,0,0,8" FontSize="Small" TextColor="LightGrey"/>
@@ -41,9 +42,9 @@
             </Grid>
 
             <FlexLayout Direction="Row" AlignItems="Center" JustifyContent="SpaceEvenly"  HeightRequest="40">
-                <ImageButton Source="rewind.png" Style="{StaticResource MediaButton}" Command="{Binding PreviousTrackCommand}" />
-                <ImageButton Style="{StaticResource MediaButton}" Source="play.png" IsVisible="{Binding PlayerState.IsPlaying, Converter={StaticResource InvertBool}}" Command="{Binding TogglePlaybackCommand}"/>
-                <ImageButton Style="{StaticResource MediaButton}" Source="pause.png" IsVisible="{Binding PlayerState.IsPlaying}" Command="{Binding TogglePlaybackCommand}" />
+                <ImageButton Source="rewind.png" Style="{StaticResource MediaButton}" Command="{Binding PreviousTrackCommand}"   CornerRadius="0" Padding="10" WidthRequest="60" HeightRequest="60"/>
+                <buttons:AnimatedPlayButton IsPlaying="{Binding PlayerState.IsPlaying}" Command="{Binding TogglePlaybackCommand}" />
+
                 <ImageButton Source="skip.png" Style="{StaticResource MediaButton}" Command="{Binding NextTrackCommand}" />
             </FlexLayout>
 

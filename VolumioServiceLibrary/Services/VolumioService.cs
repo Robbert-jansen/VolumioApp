@@ -24,8 +24,13 @@ public class VolumioService : IVolumioService
     public async void OnInit()
     {
         // Create new socket with server connection.
-        Socket = new SocketIO("http://volumio.local:3000/");
-        client.BaseAddress = new Uri("http://volumio.local/api/v1/");
+        //Socket = new SocketIO("http://volumio.local:3000/");
+        //client.BaseAddress = new Uri("http://volumio.local/api/v1/");
+
+        //IPs for Android emualtor, Android emulators can't rersolve hostnames.
+        client.BaseAddress = new Uri("http://192.168.2.21/api/v1/");
+        Socket = new SocketIO("http://192.168.2.21:3000/");
+
 
         // Creates listeners for events emitted by server.
         Socket.On("pushState", response =>
