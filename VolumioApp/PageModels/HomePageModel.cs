@@ -106,7 +106,7 @@ public class HomePageModel : BasePageModel
     {
         switch (volumioAction)
         {
-            case VolumioAction.TogglePlayback: 
+            case VolumioAction.TogglePlayback:
                 await _volumioService.TogglePlayback();
                 break;
             case VolumioAction.NextTrack:
@@ -151,8 +151,8 @@ public class HomePageModel : BasePageModel
 
         MarkPlayingSongInQueue();
         // Setting ImageSource to null before setting it to the new one prevents a crash on Android when the image is the same and previously.
-        ImageSource = null;
-        ImageSource = ImageSource.FromUri(new Uri(PlayerState.AlbumArt));
+        //ImageSource = null;
+        //ImageSource = ImageSource.FromUri(new Uri(PlayerState.AlbumArt));
     }
 
 
@@ -169,8 +169,8 @@ public class HomePageModel : BasePageModel
     {
         PlayerState = (PlayerState)sender;
 
-        ImageSource = null;
-        ImageSource = ImageSource.FromUri(new Uri(PlayerState.AlbumArt));
+        //ImageSource = null;
+        //ImageSource = ImageSource.FromUri(new Uri(PlayerState.AlbumArt));
 
         MarkPlayingSongInQueue();
     }
