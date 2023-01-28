@@ -28,7 +28,8 @@ public class QueueItem : INotifyPropertyChanged
             }
             else
             {
-                _albumArt = "http://volumio.local" + value;
+                _albumArt = "http://192.168.2.21" + value;
+                //_albumArt = "http://volumio.local" + value;
             }
 
         }

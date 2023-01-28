@@ -75,10 +75,10 @@
                 <Slider Grid.Row="1" Value="{Binding PlayerState.Volume}" Maximum="100" DragCompletedCommand="{Binding VolumeSliderDragCompletedCommand}" DragStartedCommand="{Binding VolumeSliderDragStartedCommand}" VerticalOptions="Center" />
             </Grid>
         </Frame>
-        <Frame IsVisible="{Binding ShowQueue}" Grid.RowSpan="2" Margin="0" CornerRadius="0" VerticalOptions="Fill" HorizontalOptions="Fill"  Padding="0"  BackgroundColor="#E6000000" Opacity="1" >
+        <Frame IsVisible="{Binding ShowQueue}" Grid.RowSpan="2" Margin="0" CornerRadius="0" VerticalOptions="Fill" HorizontalOptions="Fill"  Padding="0"  BackgroundColor="#B3000000" Opacity="1" >
             <Grid RowDefinitions="80,*">
                
-                <CollectionView ItemsSource="{Binding Queue.QueueItems}" x:Name="queueCollectionView" Grid.Row="0" Grid.RowSpan="2" Margin="4">
+                <CollectionView ItemsSource="{Binding Queue.QueueItems}" x:Name="queueCollectionView" Grid.Row="0" Grid.RowSpan="2" Margin="4,0,4,0">
                     <CollectionView.Header>
                         <Grid HeightRequest="80" />
                     </CollectionView.Header>
@@ -87,20 +87,32 @@
                             <SwipeView >
                                 <SwipeView.RightItems>
                                     <SwipeItems>
-                                        <SwipeItem Text="Favorite"
+                                        <SwipeItemView>
+                                            <Frame BackgroundColor="LightGrey" WidthRequest="80" CornerRadius="8" >
+                                                <ImageButton Source="play.png" 
+                                                             VerticalOptions="Fill" 
+                                                             HorizontalOptions="Fill" 
+                                                             Command="{Binding Source={x:Reference queueCollectionView}, Path=BindingContext.PlayFromQueueCommand}"
+                                                             CommandParameter="{Binding}"/> 
+                                            </Frame>
+                                        </SwipeItemView>
+                                        <!--SwipeItem Text="Favorite"
                                                    IconImageSource="close.png"
-                                                   BackgroundColor="LightGreen"
+                                                   BackgroundColor="LightGrey"
                                                    Command="{Binding Source={x:Reference queueCollectionView}, Path=BindingContext.PlayFromQueueCommand}"
-                                                   CommandParameter="{Binding}" />
+                                                   CommandParameter="{Binding}" /-->
                                     </SwipeItems>
                                 </SwipeView.RightItems>
-                                <Grid ColumnDefinitions="60,*" RowDefinitions="60" Margin="0,0,0,4" ColumnSpacing="4" BackgroundColor="Black">
-                                    <Frame Padding="0" CornerRadius="8" HasShadow="False" BorderColor="Transparent">
-                                        <Image Source="{Binding AlbumArt}" VerticalOptions="Fill" HorizontalOptions="Fill" Aspect="AspectFill" />
-                                    </Frame>
-                                    <Label Text="{Binding Name}" Grid.Column="1" VerticalOptions="Center" TextColor="White" />
-                                    <Label Text="Is Playing" IsVisible="{Binding IsPlaying}" Grid.Column="1" VerticalOptions="End" TextColor="Green"/>
-                                </Grid>
+                                <Frame Padding="0" CornerRadius="8" Margin="0,0,0,8">
+                                    <Grid ColumnDefinitions="60,*" RowDefinitions="60" Margin="0,0,0,0" ColumnSpacing="4" Background="{StaticResource GradientBackground}">
+                                        <Frame Padding="0" CornerRadius="8" HasShadow="False" BorderColor="Transparent">
+                                            <Image Source="{Binding AlbumArt}" VerticalOptions="Fill" HorizontalOptions="Fill" Aspect="AspectFill" />
+                                        </Frame>
+                                        <Label Text="{Binding Name}" Grid.Column="1" VerticalOptions="Center" TextColor="White" />
+                                        <ActivityIndicator VerticalOptions="Center" HorizontalOptions="End" Color="White" Margin="0,0,0,0" HeightRequest="30" IsRunning="{Binding IsPlaying}" Grid.Column="1" />
+                                    </Grid>
+                                </Frame>
+
                             </SwipeView>
 
                         </DataTemplate>
@@ -116,7 +128,7 @@
                         </LinearGradientBrush>
                     </BoxView.Background>
                 </BoxView>
-                <ImageButton  Source="close.png" VerticalOptions="Center" HorizontalOptions="End" WidthRequest="80" HeightRequest="80" Padding="10"  Command="{Binding DisableOverlayCommand}" />
+                <ImageButton  Source="close.png" VerticalOptions="Center" HorizontalOptions="End" WidthRequest="80"  HeightRequest="80" Padding="10" Command="{Binding DisableOverlayCommand}" />
             </Grid>
 
         </Frame>

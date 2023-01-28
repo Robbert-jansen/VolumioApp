@@ -52,9 +52,6 @@ public class HomePageModel : BasePageModel
     // Objects
     public PlayerState PlayerState { get; set; }
     public Queue Queue { get; set; }
-
-    // Used because of a crash on Android, if that ever gets fixed you can bind straight to the Albumart in PlayerState.
-    public ImageSource ImageSource { get; set; }
     public HomePageModel(IVolumioService volumioService)
     {
         _volumioService = volumioService;
@@ -150,9 +147,6 @@ public class HomePageModel : BasePageModel
         Queue = queue;
 
         MarkPlayingSongInQueue();
-        // Setting ImageSource to null before setting it to the new one prevents a crash on Android when the image is the same and previously.
-        //ImageSource = null;
-        //ImageSource = ImageSource.FromUri(new Uri(PlayerState.AlbumArt));
     }
 
 
@@ -168,9 +162,6 @@ public class HomePageModel : BasePageModel
     private void VolumioService_StatePushed(object sender, EventArgs e)
     {
         PlayerState = (PlayerState)sender;
-
-        //ImageSource = null;
-        //ImageSource = ImageSource.FromUri(new Uri(PlayerState.AlbumArt));
 
         MarkPlayingSongInQueue();
     }
