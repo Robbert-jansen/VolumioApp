@@ -93,17 +93,12 @@
                                                              VerticalOptions="Fill" 
                                                              HorizontalOptions="Fill" 
                                                              Command="{Binding Source={x:Reference queueCollectionView}, Path=BindingContext.PlayFromQueueCommand}"
-                                                             CommandParameter="{Binding}"/> 
+                                                             CommandParameter="{Binding}"/>
                                             </Frame>
                                         </SwipeItemView>
-                                        <!--SwipeItem Text="Favorite"
-                                                   IconImageSource="close.png"
-                                                   BackgroundColor="LightGrey"
-                                                   Command="{Binding Source={x:Reference queueCollectionView}, Path=BindingContext.PlayFromQueueCommand}"
-                                                   CommandParameter="{Binding}" /-->
                                     </SwipeItems>
                                 </SwipeView.RightItems>
-                                <Frame Padding="0" CornerRadius="8" Margin="0,0,0,8">
+                                <Frame Padding="0" CornerRadius="8" Margin="0,0,0,8" IsClippedToBounds="True">
                                     <Grid ColumnDefinitions="60,*" RowDefinitions="60" Margin="0,0,0,0" ColumnSpacing="4" Background="{StaticResource GradientBackground}">
                                         <Frame Padding="0" CornerRadius="8" HasShadow="False" BorderColor="Transparent">
                                             <Image Source="{Binding AlbumArt}" VerticalOptions="Fill" HorizontalOptions="Fill" Aspect="AspectFill" />
