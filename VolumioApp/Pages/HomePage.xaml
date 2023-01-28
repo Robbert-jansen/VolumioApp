@@ -30,7 +30,7 @@
             VerticalOptions="Center" 
             HorizontalOptions="Fill">
 
-                <Image Source="{Binding ImageSource}" Aspect="AspectFit"/>
+                <Image Source="{Binding PlayerState.AlbumArt}" Aspect="AspectFit"/>
             </Frame>
             <Label Text="{Binding PlayerState.Title}"  Margin="24,0,0,0" FontSize="Medium" TextColor="White" FontAttributes="Bold"/>
             <Label Text="{Binding PlayerState.Artist}"  Margin="24,0,0,8" FontSize="Small" TextColor="LightGrey"/>
