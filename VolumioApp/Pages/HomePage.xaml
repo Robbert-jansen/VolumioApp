@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:VolumioApp.PageModels"
              xmlns:converters="clr-namespace:VolumioApp.Converters"
+             xmlns:buttons="clr-namespace:VolumioApp.Views.Buttons"
              x:Class="VolumioApp.Pages.HomePage"
              Title="HomePage" >
     <ContentPage.Resources>
@@ -42,35 +43,8 @@
 
             <FlexLayout Direction="Row" AlignItems="Center" JustifyContent="SpaceEvenly"  HeightRequest="40">
                 <ImageButton Source="rewind.png" Style="{StaticResource MediaButton}" Command="{Binding PreviousTrackCommand}"   CornerRadius="0" Padding="10" WidthRequest="60" HeightRequest="60"/>
-                <Grid WidthRequest="120" HeightRequest="120">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding TogglePlaybackCommand}" Tapped="OnTapGestureRecognizerTapped"  />
-                    </Grid.GestureRecognizers>
-                    <Grid x:Name="EllipseGrid">
-                        <Ellipse x:Name="Ellipse1" VerticalOptions="Center"  HorizontalOptions="Center" WidthRequest="100" HeightRequest="100" Fill="#87CEEB" Rotation="90" Opacity="0.9"/>
-                        <Ellipse x:Name="Ellipse2" VerticalOptions="Center"  HorizontalOptions="Center" WidthRequest="100" HeightRequest="100" Fill="#A020F0" Rotation="45"  Opacity="0.8"/>
-                        <Ellipse x:Name="Ellipse3" VerticalOptions="Center"  HorizontalOptions="Center" WidthRequest="100" HeightRequest="100" Fill="#FFC0CB" Rotation="135" Opacity="0.7"/>
-                        <Ellipse x:Name="Ellipse4" VerticalOptions="Center"  HorizontalOptions="Center" WidthRequest="100" HeightRequest="100" Fill="#FFA500" Opacity="0.6"/>
-                    </Grid>
+                <buttons:AnimatedPlayButton IsPlaying="{Binding PlayerState.IsPlaying}" Command="{Binding TogglePlaybackCommand}" />
 
-
-                    <Frame WidthRequest="100" HeightRequest="100" CornerRadius="50" BackgroundColor="#301934" >
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding TogglePlaybackCommand}" Tapped="OnTapGestureRecognizerTapped"  />
-                        </Frame.GestureRecognizers>
-                        <Grid>
-                            <Image  Source="play.png" IsVisible="{Binding PlayerState.IsPlaying, Converter={StaticResource InvertBool}}" WidthRequest="40" HeightRequest="40"/>
-                            <Image  Source="pause.png" IsVisible="{Binding PlayerState.IsPlaying}" WidthRequest="40" HeightRequest="40" />
-                        </Grid>
-
-                    </Frame>
-                    <!--Image Source="play_button_background" x:Name="playButtonImage" /-->
-                    
-                    <Image  Source="play.png" IsVisible="{Binding PlayerState.IsPlaying, Converter={StaticResource InvertBool}}" WidthRequest="40" HeightRequest="60"/>
-                    <!--ImageButton Style="{StaticResource MediaButton}" Source="pause.png" IsVisible="{Binding PlayerState.IsPlaying}" Command="{Binding TogglePlaybackCommand}" />
-                    <ImageButton Style="{StaticResource MediaButton}" Source="play.png" IsVisible="{Binding PlayerState.IsPlaying, Converter={StaticResource InvertBool}}" Command="{Binding TogglePlaybackCommand}"/-->
-                </Grid>
-                
                 <ImageButton Source="skip.png" Style="{StaticResource MediaButton}" Command="{Binding NextTrackCommand}" />
             </FlexLayout>
 

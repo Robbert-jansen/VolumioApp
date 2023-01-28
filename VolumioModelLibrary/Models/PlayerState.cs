@@ -59,7 +59,7 @@ public class PlayerState : INotifyPropertyChanged
     public string? TrackType { get; set; }
 
     // Current timestamp in miliseconds.
-    public int Seek { get; set; } 
+    public int? Seek { get; set; } 
     // Duration in seconds.
     public int Duration { get; set; }
 

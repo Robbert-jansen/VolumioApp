@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:VolumioApp.Converters"
+             x:Class="VolumioApp.Views.Buttons.AnimatedPlayButton">
+    <ContentView.Resources>
+        <converters:InvertedBoolConverter x:Key="InvertBool" />
+    </ContentView.Resources>
+    <Grid WidthRequest="120" HeightRequest="120">
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Tapped="TapGestureRecognizerTapped"  />
+        </Grid.GestureRecognizers>
+        <Grid x:Name="EllipseGrid">
+            <Ellipse x:Name="Ellipse1" VerticalOptions="Center"  HorizontalOptions="Center" WidthRequest="100" HeightRequest="100" Fill="#87CEEB" Rotation="90" Opacity="0.9"/>
+            <Ellipse x:Name="Ellipse2" VerticalOptions="Center"  HorizontalOptions="Center" WidthRequest="100" HeightRequest="100" Fill="#A020F0" Rotation="45"  Opacity="0.8"/>
+            <Ellipse x:Name="Ellipse3" VerticalOptions="Center"  HorizontalOptions="Center" WidthRequest="100" HeightRequest="100" Fill="#FFC0CB" Rotation="135" Opacity="0.7"/>
+            <Ellipse x:Name="Ellipse4" VerticalOptions="Center"  HorizontalOptions="Center" WidthRequest="100" HeightRequest="100" Fill="#FFA500" Opacity="0.6"/>
+        </Grid>
+
+
+        <Frame WidthRequest="100" HeightRequest="100" CornerRadius="50" BackgroundColor="#301934" >
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="TapGestureRecognizerTapped"  />
+            </Frame.GestureRecognizers>
+            <Grid>
+                <Image x:Name="PlayImage"  Source="play.png" WidthRequest="40" HeightRequest="40"/>
+                <Image x:Name="PauseImage" Source="pause.png" IsVisible="false" WidthRequest="40" HeightRequest="40" />
+            </Grid>
+
+        </Frame>
+    </Grid>
+</ContentView>
