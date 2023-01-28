@@ -16,8 +16,6 @@
             <Ellipse x:Name="Ellipse3" VerticalOptions="Center"  HorizontalOptions="Center" WidthRequest="100" HeightRequest="100" Fill="#FFC0CB" Rotation="135" Opacity="0.7"/>
             <Ellipse x:Name="Ellipse4" VerticalOptions="Center"  HorizontalOptions="Center" WidthRequest="100" HeightRequest="100" Fill="#FFA500" Opacity="0.6"/>
         </Grid>
-
-
         <Frame WidthRequest="100" HeightRequest="100" CornerRadius="50" BackgroundColor="#301934" >
             <Frame.GestureRecognizers>
                 <TapGestureRecognizer Tapped="TapGestureRecognizerTapped"  />
