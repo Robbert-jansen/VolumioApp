@@ -36,8 +36,6 @@ public partial class AnimatedPlayButton : ContentView
             instance.ResetAnimation();
         }
 
-        //instance.OnInit();
-
     }
 
     private int upperBound = 130;
