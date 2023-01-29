@@ -17,6 +17,10 @@ public interface IVolumioService
     Task<Queue> GetQueue();
 
     Task PlayTrackFromQueue(int trackPosition);
+    
+    Task ToggleRepeat(bool repeat, bool repeatSingle);
+    
+    Task ToggleShuffle(bool shuffle);
     #endregion
 
     #region Socket.io

@@ -1,4 +1,5 @@
 ﻿
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using VolumioModelLibrary.Enums;
 using VolumioModelLibrary.Models;
@@ -7,6 +8,7 @@ using VolumioServiceLibrary.Services;
 
 namespace VolumioApp.PageModels;
 
+[SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task")]
 public class HomePageModel : BasePageModel
 {
     private readonly IVolumioService _volumioService;
@@ -19,9 +21,11 @@ public class HomePageModel : BasePageModel
     public ICommand MuteCommand { get; set; }
     public ICommand UnmuteCommand { get; set; }
     public ICommand TogglePlaybackCommand { get; set; }
+    public ICommand ToggleShuffleCommand { get; set;}
+    public ICommand ToggleRepeatCommand { get; set; }
     public ICommand NextTrackCommand { get; set; }
     public ICommand PreviousTrackCommand { get; set; }
-
+    
     // UI Commands.
     public ICommand EditPlaybackValuesCommand { get; set; }
     public ICommand ShowQueueCommand { get; set; }
@@ -62,6 +66,8 @@ public class HomePageModel : BasePageModel
 
         // Volumio Action Commands
         TogglePlaybackCommand = new Command(async () => await ExecuteVolumioAction(VolumioAction.TogglePlayback));
+        ToggleShuffleCommand = new Command(async () => await ExecuteVolumioAction(VolumioAction.ToggleShuffle));
+        ToggleRepeatCommand = new Command(async () => await ExecuteVolumioAction(VolumioAction.ToggleRepeat));
         PreviousTrackCommand = new Command(async () => await ExecuteVolumioAction(VolumioAction.PreviousTrack));
         NextTrackCommand = new Command(async () => await ExecuteVolumioAction(VolumioAction.NextTrack));
         MuteCommand = new Command(async () => await ExecuteVolumioAction(VolumioAction.MuteVolume));
@@ -105,6 +111,23 @@ public class HomePageModel : BasePageModel
         {
             case VolumioAction.TogglePlayback:
                 await _volumioService.TogglePlayback();
+                break;
+            case VolumioAction.ToggleRepeat:
+                if (PlayerState.Repeat == false)
+                {
+                    await _volumioService.ToggleRepeat(true, false);
+                }
+                else if (PlayerState.Repeat == true && PlayerState.RepeatSingle == false)
+                {
+                    await _volumioService.ToggleRepeat(true,true);
+                }
+                else if (PlayerState.Repeat == true)
+                {
+                    await _volumioService.ToggleRepeat(false,false);
+                }
+                break;
+            case VolumioAction.ToggleShuffle:
+                await _volumioService.ToggleShuffle(true);
                 break;
             case VolumioAction.NextTrack:
                 await _volumioService.NextTrack();

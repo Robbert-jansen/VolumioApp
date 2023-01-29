@@ -66,12 +66,14 @@
 
         </BoxView>
 
-        <Frame IsVisible="{Binding EditPlaybackValues}" Grid.RowSpan="2" Margin="16" CornerRadius="8" VerticalOptions="End" HorizontalOptions="Fill" HeightRequest="200"  BackgroundColor="{StaticResource LightGray}" Opacity="1">
-            <Grid RowDefinitions="*,*">
-                <ImageButton Source="volume.png" Style="{StaticResource MediaButton}" Command="{Binding UnmuteCommand}" HorizontalOptions="Start" VerticalOptions="Center" />
-                <ImageButton Source="mute.png" Style="{StaticResource MediaButton}" Command="{Binding MuteCommand}" HorizontalOptions="End" VerticalOptions="Center"/>
-                <Label Text="{Binding PlayerState.Volume}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="Large"/>
-                <Slider Grid.Row="1" Value="{Binding PlayerState.Volume}" Maximum="100" DragCompletedCommand="{Binding VolumeSliderDragCompletedCommand}" DragStartedCommand="{Binding VolumeSliderDragStartedCommand}" VerticalOptions="Center" />
+        <Frame IsVisible="{Binding EditPlaybackValues}" Grid.RowSpan="2" Margin="16" CornerRadius="8" VerticalOptions="End" HorizontalOptions="Fill" HeightRequest="300"  BackgroundColor="{StaticResource LightGray}" Opacity="1">
+            <Grid RowDefinitions="*,*,*">
+                <ImageButton Grid.Row="0" Source="shuffle.png" Style="{StaticResource MediaButton}" Command="{Binding ToggleShuffleCommand}" HorizontalOptions="Start" VerticalOptions="Center" />
+                <ImageButton Grid.Row="0" Source="repeat.png" Style="{StaticResource MediaButton}" Command="{Binding ToggleRepeatCommand}" HorizontalOptions="End" VerticalOptions="Center"/>
+                <ImageButton Grid.Row="1" Source="volume.png" Style="{StaticResource MediaButton}" Command="{Binding UnmuteCommand}" HorizontalOptions="Start" VerticalOptions="Center" />
+                <ImageButton Grid.Row="1" Source="mute.png" Style="{StaticResource MediaButton}" Command="{Binding MuteCommand}" HorizontalOptions="End" VerticalOptions="Center"/>
+                <Label Grid.Row="1" Text="{Binding PlayerState.Volume}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="Large"/>
+                <Slider Grid.Row="2" Value="{Binding PlayerState.Volume}" Maximum="100" DragCompletedCommand="{Binding VolumeSliderDragCompletedCommand}" DragStartedCommand="{Binding VolumeSliderDragStartedCommand}" VerticalOptions="Center" />
             </Grid>
         </Frame>
         <Frame IsVisible="{Binding ShowQueue}" Grid.RowSpan="2" Margin="0" CornerRadius="0" VerticalOptions="Fill" HorizontalOptions="Fill"  Padding="0"  BackgroundColor="#B3000000" Opacity="1" >

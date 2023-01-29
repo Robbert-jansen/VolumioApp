@@ -125,6 +125,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="ConfigureAwait.Fody" Version="3.3.2" />
 	  <PackageReference Include="PropertyChanged.Fody" Version="4.0.5" />
 	</ItemGroup>
 
