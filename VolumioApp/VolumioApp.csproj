@@ -74,8 +74,6 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android|AnyCPU'">
-	  <AndroidLinkTool>r8</AndroidLinkTool>
-	  <EnableLLVM>True</EnableLLVM>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-android|AnyCPU'">
@@ -87,6 +85,11 @@
 	  <ProvisioningType>manual</ProvisioningType>
 	  <CodesignKey>Apple Development: Created via API (P96BLZ66D5)</CodesignKey>
 	  <CodesignProvision>VS: WildCard Development</CodesignProvision>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+	  <AndroidLinkMode>None</AndroidLinkMode>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -42,9 +42,8 @@
             </Grid>
 
             <FlexLayout Direction="Row" AlignItems="Center" JustifyContent="SpaceEvenly"  HeightRequest="40">
-                <ImageButton Source="rewind.png" Style="{StaticResource MediaButton}" Command="{Binding PreviousTrackCommand}"   CornerRadius="0" Padding="10" WidthRequest="60" HeightRequest="60"/>
+                <ImageButton Source="rewind.png" Style="{StaticResource MediaButton}" Command="{Binding PreviousTrackCommand}" />
                 <buttons:AnimatedPlayButton IsPlaying="{Binding PlayerState.IsPlaying}" Command="{Binding TogglePlaybackCommand}" />
-
                 <ImageButton Source="skip.png" Style="{StaticResource MediaButton}" Command="{Binding NextTrackCommand}" />
             </FlexLayout>
 

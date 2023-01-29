@@ -137,7 +137,7 @@ public class VolumioService : IVolumioService
 
     public async Task PreviousTrack()
     {
-        await EmitAsync("previous");
+        await EmitAsync("prev");
     }
 
     public async Task MuteVolume()
