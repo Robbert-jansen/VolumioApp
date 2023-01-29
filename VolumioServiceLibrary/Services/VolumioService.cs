@@ -91,11 +91,6 @@ public class VolumioService : IVolumioService
     {
         await client.GetAsync("commands/?cmd=play&N=" + trackPosition);
     }
-    
-    public async Task ToggleShuffle(bool shuffle)
-    {
-        await client.GetAsync("commands/?cmd=random&value=" + shuffle);
-    }
 
     // Is this nececcary? probably not but it's cool.
     private static async Task<object> GetAsync(Type returnType, string uri)
@@ -135,12 +130,37 @@ public class VolumioService : IVolumioService
         await EmitAsync("toggle");
     }
     
-    public async Task ToggleRepeat(bool repeat, bool repeatSingle)
+    /*public async Task ToggleRepeat(bool repeat, bool repeatSingle)
     {
         await EmitAsync("setRepeat", new object[]
         {
             new { value = repeat, repeatSingle = repeatSingle }
         });
+    }*/
+
+    public async Task ToggleRepeat(PlayerState playerState)
+    {
+        var data = new object();
+        // Checks current state and uses that to determine next state.
+        if (playerState.Repeat == false)
+        {
+            data = new { value = true, repeatSingle = false };
+        }
+        else if (playerState is { Repeat: true, RepeatSingle: false })
+        {
+            data = new { value = true, repeatSingle = true };
+        }
+        else if (playerState.Repeat == true)
+        {
+            data = new { value = false, repeatSingle = false };
+        }
+        
+        await EmitAsync("setRepeat", new[] { data });
+    }
+    
+    public async Task ToggleShuffle(PlayerState playerState)
+    {
+        await EmitAsync("setRandom", new object[] { new { value = !playerState.Random } });
     }
 
     public async Task NextTrack()

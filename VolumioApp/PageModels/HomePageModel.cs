@@ -113,21 +113,10 @@ public class HomePageModel : BasePageModel
                 await _volumioService.TogglePlayback();
                 break;
             case VolumioAction.ToggleRepeat:
-                if (PlayerState.Repeat == false)
-                {
-                    await _volumioService.ToggleRepeat(true, false);
-                }
-                else if (PlayerState.Repeat == true && PlayerState.RepeatSingle == false)
-                {
-                    await _volumioService.ToggleRepeat(true,true);
-                }
-                else if (PlayerState.Repeat == true)
-                {
-                    await _volumioService.ToggleRepeat(false,false);
-                }
+                await _volumioService.ToggleRepeat(PlayerState);
                 break;
             case VolumioAction.ToggleShuffle:
-                await _volumioService.ToggleShuffle(true);
+                await _volumioService.ToggleShuffle(PlayerState);
                 break;
             case VolumioAction.NextTrack:
                 await _volumioService.NextTrack();
