@@ -134,7 +134,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\HomePage.xaml">
+	  <MauiXaml Update="Pages\PlayerPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Buttons\AnimatedPlayButton.xaml">

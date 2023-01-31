@@ -1,6 +1,7 @@
-using Microsoft.Maui.Controls;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using VolumioApp.PageModels;
 
@@ -12,5 +13,5 @@ public partial class HomePage : ContentPage
 	{
 		InitializeComponent();
 		this.BindingContext = homePageModel;
-    }
+	}
 }

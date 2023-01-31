@@ -16,6 +16,8 @@ public interface IVolumioService
 
 	#region Rest
 
+	Task<NavigationRoot> GetNavigationState(string uri = "");
+	
     /// <summary>
     ///     Gets current PlayerState of Volumio Server.
     /// </summary>

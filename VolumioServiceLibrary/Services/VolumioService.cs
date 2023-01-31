@@ -81,6 +81,11 @@ public class VolumioService : IVolumioService
 		return (Queue)await GetAsync(typeof(Queue), "getQueue");
 	}
 
+	public async Task<NavigationRoot> GetNavigationState(string uri)
+	{
+		return (NavigationRoot)await GetAsync(typeof(NavigationRoot), "browse" + "?uri=" + uri);
+	}
+
 	public async Task<PlayerState> GetPlayerState()
 	{
 		return (PlayerState)await GetAsync(typeof(PlayerState), "getState");

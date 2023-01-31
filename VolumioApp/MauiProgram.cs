@@ -34,14 +34,16 @@ public static class MauiProgram
     // Registers Pages for use in App.
     public static MauiAppBuilder RegisterAppPages(this MauiAppBuilder mauiAppBuilder)
     {
+        mauiAppBuilder.Services.AddTransient<PlayerPage>();
         mauiAppBuilder.Services.AddTransient<HomePage>();
-
+        
         return mauiAppBuilder;
     }
 
     // Registers ViewModels for use in App.
     public static MauiAppBuilder RegisterAppViewModels(this MauiAppBuilder mauiAppBuilder)
     {
+        mauiAppBuilder.Services.AddTransient<PlayerPageModel>();
         mauiAppBuilder.Services.AddTransient<HomePageModel>();
 
         return mauiAppBuilder;
