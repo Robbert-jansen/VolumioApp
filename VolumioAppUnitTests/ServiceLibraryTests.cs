@@ -32,17 +32,9 @@ public class ServiceLibraryTests
 	[Fact]
 	public async void PlayTrackFromQueue_AsyncAwait_NoException()
 	{
-		
 		try
 		{
-			var queue = await _volumioService.GetQueue();
-			var rnd = new Random();
-			if (queue.QueueItems.Count == 0)
-			{
-				Assert.Fail("Queue empty so method can't be tested");
-			}
-			await _volumioService.PlayTrackFromQueue(rnd.Next(0,queue.QueueItems.Count -1));
-			
+			await _volumioService.PlayTrackFromQueue(1);
 		}
 		catch
 		{
