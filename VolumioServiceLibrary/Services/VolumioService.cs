@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Newtonsoft.Json;
 using SocketIOClient;
+using System;
 using VolumioModelLibrary.Models;
 using VolumioServiceLibrary.Interfaces;
 
@@ -8,7 +9,10 @@ namespace VolumioServiceLibrary.Services;
 
 public class VolumioService : IVolumioService
 {
-	private static HttpClient client = new();
+	private static HttpClient client = new()
+	{
+		Timeout = new TimeSpan(0, 0, 10)
+	};
 
 	public VolumioService()
 	{
