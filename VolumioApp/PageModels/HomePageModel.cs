@@ -10,7 +10,7 @@ public class HomePageModel : BasePageModel
 	
 	public NavigationRoot NavigationRoot { get; set; }
 	
-	public ObservableCollection<Item> NavigationItems { get; set; }
+	public ObservableCollection<List> NavigationLists { get; set; }
 
 	public HomePageModel(IVolumioService volumioService)
 	{
@@ -28,7 +28,7 @@ public class HomePageModel : BasePageModel
 	{
 		NavigationRoot = await _volumioService.GetNavigationState();
 
-		NavigationItems =  new ObservableCollection<Item>(NavigationRoot.Navigation.Lists.FirstOrDefault().Items);
+		NavigationLists =  new ObservableCollection<List>(NavigationRoot.Navigation.Lists);
 
 	}
 
