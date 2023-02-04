@@ -3,6 +3,7 @@ using VolumioApp.Pages;
 using VolumioServiceLibrary.Interfaces;
 using VolumioServiceLibrary.Services;
 
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace VolumioApp;
 
 public static class MauiProgram

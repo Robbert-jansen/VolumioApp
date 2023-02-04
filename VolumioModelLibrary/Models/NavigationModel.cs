@@ -7,7 +7,9 @@ public class NavigationRoot
 
 public class Navigation
 {
-	public List<List> Lists { get; set; }
+    public Prev prev { get; set; }
+    public Info info { get; set; }
+    public List<List> Lists { get; set; }
 }
 
 public class Item
@@ -15,7 +17,10 @@ public class Item
 	public string Service { get; set; }
 	public string Type { get; set; }
 	public string Title { get; set; }
-	public string Artist { get; set; }
+    public int Duration { get; set; }
+    public string TrackNumber { get; set; }
+    public string TrackType { get; set; }
+    public string Artist { get; set; }
 	public object Year { get; set; }
 	public string Album { get; set; }
 	public string Uri { get; set; }
@@ -56,3 +61,23 @@ public class List
         }
     }
 }
+
+public class Info
+{
+    public string uri { get; set; }
+    public string service { get; set; }
+    public string artist { get; set; }
+    public string album { get; set; }
+    public string albumart { get; set; }
+    public string year { get; set; }
+    public string genre { get; set; }
+    public string type { get; set; }
+    public string trackType { get; set; }
+    public string duration { get; set; }
+}
+
+public class Prev
+{
+    public string uri { get; set; }
+}
+

@@ -14,4 +14,19 @@ public partial class HomePage : ContentPage
 		InitializeComponent();
 		this.BindingContext = homePageModel;
 	}
+
+	private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+	{
+		//var grid = (Grid)sender;
+
+		//var vm = (HomePageModel)BindingContext;
+
+		//if(vm.ListItemSelected.CanExecute(null))
+		//{
+		//	vm.ListItemSelected.Execute(null);
+		//}
+
+		//vm.ListItemSelected.Execute(grid.BindingContext);
+		
+	}
 }

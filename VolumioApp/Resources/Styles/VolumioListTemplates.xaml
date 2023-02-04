@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="VolumioApp.Resources.Styles.VolumioListTemplates"
+                    xmlns:models="clr-namespace:VolumioModelLibrary.Models;assembly=VolumioModelLibrary"
+                    xmlns:pageModels="clr-namespace:VolumioApp.PageModels"
+                    xmlns:templateSelectors="clr-namespace:VolumioApp.TemplateSelectors">
+
+    <templateSelectors:VolumioItemDataTemplateSelector x:Key="volumioItemTemplateSelector" DefaultTemplate="{StaticResource defaultTemplate}" FolderTemplate="{StaticResource folderTemplate}" SongTemplate="{StaticResource songTemplate}" />
+
+    <DataTemplate x:Key="defaultTemplate" x:DataType="models:List">
+        <StackLayout >
+            <Frame HeightRequest="80" Margin="8" CornerRadius="8" BackgroundColor="Green">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding  Path=ListItemSelectedCommand,Source={RelativeSource AncestorType={x:Type pageModels:HomePageModel}}}"  CommandParameter="{Binding .}" />
+                </Frame.GestureRecognizers>
+                <Image Source="{Binding AlbumArt}" VerticalOptions="Fill" HorizontalOptions="Fill" />
+            </Frame>
+
+            <Label Grid.Row="1" Text="{Binding Name}" TextColor="Orange" HorizontalOptions="Center" />
+            <StackLayout  BindableLayout.ItemsSource="{Binding Items}" BindableLayout.ItemTemplateSelector="{StaticResource volumioItemTemplateSelector}" Grid.Row="2">
+
+            </StackLayout>
+        </StackLayout>
+    </DataTemplate>
+
+    <DataTemplate x:Key="emptyTemplate" x:DataType="models:List">
+        <StackLayout  BindableLayout.ItemsSource="{Binding Items}" BindableLayout.ItemTemplateSelector="{StaticResource volumioItemTemplateSelector}" Grid.Row="2">
+
+        </StackLayout>
+    </DataTemplate>
+
+
+
+
+</ResourceDictionary>

@@ -3,8 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="VolumioApp.Pages.HomePage"
              xmlns:models="clr-namespace:VolumioModelLibrary.Models;assembly=VolumioModelLibrary"
+             xmlns:templateSelectors="clr-namespace:VolumioApp.TemplateSelectors"
+             x:Name="homePage"
              >
-    <Grid RowDefinitions="*" ColumnDefinitions="*">
+    <ContentPage.Resources>
+
+        <templateSelectors:VolumioListDataTemplateSelector x:Key="volumioListTemplateSelector" DefaultTemplate="{StaticResource defaultTemplate}" EmptyTemplate="{StaticResource emptyTemplate}" />
+    </ContentPage.Resources>
+    <CollectionView ItemsSource="{Binding NavigationLists}" x:Name="NavigationLayout" ItemsLayout="{Binding ItemsLayout}" ItemTemplate="{StaticResource volumioListTemplateSelector}"  >
+
+    </CollectionView>
+
+
+
+    <!--Grid RowDefinitions="*" ColumnDefinitions="*">
         <CollectionView ItemsSource="{Binding NavigationLists}" ItemsLayout="VerticalGrid, 2">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:List">
@@ -20,6 +32,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </Grid>
-    
+    </Grid-->
 </ContentPage>

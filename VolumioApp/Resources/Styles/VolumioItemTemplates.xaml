@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="VolumioApp.Resources.Styles.VolumioItemTemplates"
+                    xmlns:models="clr-namespace:VolumioModelLibrary.Models;assembly=VolumioModelLibrary"
+                    xmlns:pageModels="clr-namespace:VolumioApp.PageModels">
+
+    <DataTemplate x:Key="songTemplate" x:DataType="models:Item">
+        <Grid HeightRequest="50" ColumnDefinitions="20,*" Margin="8,0,0,8" RowDefinitions="25,25" ColumnSpacing="0">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding  Path=ItemSelectedCommand,Source={RelativeSource AncestorType={x:Type pageModels:HomePageModel}}}"  CommandParameter="{Binding .}" />
+            </Grid.GestureRecognizers>
+            <Label Grid.Column="0" Grid.RowSpan="2" FontSize="Small" TextColor="LightGray" VerticalOptions="Center" Text="{Binding TrackNumber}" HorizontalOptions="Fill" />
+            <Label Grid.Column="1" FontSize="Medium" TextColor="White"  VerticalOptions="End" Text="{Binding Title}" />
+            <Label Grid.Column="1"  Grid.Row="1"  FontSize="Small" TextColor="LightGray"  VerticalOptions="Start" Text="{Binding Artist}" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="folderTemplate" x:DataType="models:Item">
+        <Grid HeightRequest="80" Margin="8,0,0,8" ColumnDefinitions="80,*" ColumnSpacing="8">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding  Path=ItemSelectedCommand,Source={RelativeSource AncestorType={x:Type pageModels:HomePageModel}}}"  CommandParameter="{Binding .}" />
+            </Grid.GestureRecognizers>
+            <Frame HeightRequest="80" WidthRequest="80" Padding="0" CornerRadius="8" HorizontalOptions="Start" BackgroundColor="Black">
+
+                <Image Source="{Binding AlbumArt}" Aspect="AspectFill" HeightRequest="80" WidthRequest="80"/>
+            </Frame>
+
+            <Grid Grid.Column="1" RowDefinitions="*,*,2*">
+                <Label  FontSize="Medium" TextColor="White" FontAttributes="Bold" Text="{Binding Title}" />
+                <Label Grid.Row="1"  LineBreakMode="TailTruncation" FontSize="Small" TextColor="LightGray" Text="{Binding Artist}" />
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="defaultTemplate" x:DataType="models:Item">
+        <Grid HeightRequest="80" Margin="8,0,0,8" ColumnDefinitions="80,*" ColumnSpacing="8">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding  Path=ItemSelectedCommand,Source={RelativeSource AncestorType={x:Type pageModels:HomePageModel}}}"  CommandParameter="{Binding .}" />
+            </Grid.GestureRecognizers>
+            <Frame HeightRequest="80" WidthRequest="80" Padding="0" CornerRadius="8" HorizontalOptions="Start" BackgroundColor="Black">
+
+                <Image Source="{Binding AlbumArt}" Aspect="AspectFill" HeightRequest="80" WidthRequest="80"/>
+            </Frame>
+
+            <Grid Grid.Column="1" RowDefinitions="*,*,2*">
+                <Label  FontSize="Medium" TextColor="White" FontAttributes="Bold" Text="{Binding Title}" />
+                <Label Grid.Row="1"  LineBreakMode="TailTruncation" FontSize="Small" TextColor="LightGray" Text="{Binding Artist}" />
+            </Grid>
+        </Grid>
+    </DataTemplate>
+    
+</ResourceDictionary>
