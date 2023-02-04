@@ -18,6 +18,8 @@ public class HomePageModel : BasePageModel
 
     public ICommand ListItemSelectedCommand => new Command<List>(ListItemSelected);
 
+    public ICommand GoToPreviousCommand => new Command(GoToPrevious);
+
     public ICommand ItemSelectedCommand => new Command<Item>(ItemSelected);
 
     private async void ListItemSelected(List obj)
@@ -48,6 +50,22 @@ public class HomePageModel : BasePageModel
         System.Diagnostics.Debug.WriteLine(" the selected item's name  is:  " + obj.Title);
 
         NavigationRoot = await _volumioService.GetNavigationState(obj.Uri);
+
+        NavigationLists = new ObservableCollection<List>(NavigationRoot.Navigation.Lists);
+    }
+
+    private async void GoToPrevious()
+    {
+        if (NavigationRoot.Navigation.prev != null)
+        {
+            NavigationRoot = await _volumioService.GetNavigationState(NavigationRoot.Navigation.prev.uri);
+        }
+        else
+        {
+            NavigationRoot = await _volumioService.GetNavigationState();
+        }
+
+       
 
         NavigationLists = new ObservableCollection<List>(NavigationRoot.Navigation.Lists);
     }
