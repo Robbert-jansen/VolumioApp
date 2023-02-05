@@ -4,15 +4,33 @@
              x:Class="VolumioApp.Pages.HomePage"
              xmlns:models="clr-namespace:VolumioModelLibrary.Models;assembly=VolumioModelLibrary"
              xmlns:templateSelectors="clr-namespace:VolumioApp.TemplateSelectors"
+             xmlns:converters="clr-namespace:VolumioApp.Converters"
+             xmlns:buttons="clr-namespace:VolumioApp.Views.Buttons"
              x:Name="homePage"
              >
     <ContentPage.Resources>
-
+        <converters:MilisecondToSecondConverter x:Key="msToSec" />
+        <converters:SecondToMilisecondConverter x:Key="SecondToMilisecond" />
+        <converters:InvertedBoolConverter x:Key="InvertBool" />
+        <converters:MilisecondsToTimeConverter x:Key="MilisecondsToTime" />
+        <converters:SecondsToTimeConverter x:Key="SecondsToTime" />
         <templateSelectors:VolumioListDataTemplateSelector x:Key="volumioListTemplateSelector" DefaultTemplate="{StaticResource defaultTemplate}" EmptyTemplate="{StaticResource emptyTemplate}" />
     </ContentPage.Resources>
-    <CollectionView ItemsSource="{Binding NavigationLists}" x:Name="NavigationLayout" ItemsLayout="{Binding ItemsLayout}" ItemTemplate="{StaticResource volumioListTemplateSelector}"  >
+    <Grid RowDefinitions="*,80">
+        <CollectionView ItemsSource="{Binding NavigationLists}" x:Name="NavigationLayout" ItemsLayout="{Binding ItemsLayout}" ItemTemplate="{StaticResource volumioListTemplateSelector}"  >
 
-    </CollectionView>
+        </CollectionView>
+
+        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Grid.Row="1" Padding="8" x:Name="miniPlayer">
+            <Frame CornerRadius="8" Padding="0">
+                <Grid ColumnDefinitions="*,80" >
+                    <Slider Value="{Binding PlayerState.Seek, Mode=TwoWay}" Maximum="{Binding PlayerState.Duration, Converter={StaticResource SecondToMilisecond}}" Margin="0,0,0,0" DragCompletedCommand="{Binding SeekSliderDragCompletedCommand}"  MinimumTrackColor="SkyBlue" />
+                    <buttons:AnimatedPlayButton Grid.Column="1" IsPlaying="{Binding PlayerState.IsPlaying}" Command="{Binding TogglePlaybackCommand}" />
+                </Grid>
+            </Frame>
+        </Grid>
+    </Grid>
+
 
 
 

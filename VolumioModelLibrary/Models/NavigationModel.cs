@@ -30,7 +30,7 @@ public class Item
         get => _albumArt;
         set
         {
-            if (value.Contains("http"))
+            if (value.StartsWith("http"))
                 _albumArt = value;
             else
                 _albumArt = "http://192.168.2.21" + value;
@@ -54,7 +54,7 @@ public class List
         get => _albumArt;
         set
         {
-            if (value.Contains("http"))
+            if (value.StartsWith("http"))
                 _albumArt = value;
             else
                 _albumArt = "http://192.168.2.21" + value;
